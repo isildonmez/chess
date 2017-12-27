@@ -37,17 +37,36 @@ describe Pawn do
       expect(b_pawn.can_move(:c7, :c5, true)).to eq(true)
       expect(w_pawn.can_move(:a5, :a6, true)).to eq(true)
     end
-
   end
 
+  describe "#can_attack" do
+    it "returns false when the coordinate letters are not in a row" do
+      expect(w_pawn.can_attack(:a4, :c5, false)).to eql(false)
+      expect(b_pawn.can_attack(:d6, :b5, false)).to eql(false)
+    end
 
+    context "when white" do
+      it "returns false" do
+        expect(w_pawn.can_attack(:a4, :b6, false)).to eql(false)
+      end
+    end
 
+    context "when black" do
+      it "returnsfalse" do
+        expect(b_pawn.can_attack(:d6, :c4, false)).to eql(false)
+      end
+    end
 
+    it "returns false if the same colour" do
+      expect(w_pawn.can_attack(:a4, :b5, (fake_board[:b5].colour == :white))).to eql(false)
+      expect(b_pawn.can_attack(:d5, :c4, (fake_board[:c4].colour == :black))).to eql(false)
+    end
 
-
-
-
-
+    it "returns true" do
+      expect(w_pawn.can_attack(:d5, :e6, false)).to eq(true)
+      expect(b_pawn.can_attack(:e6, :d5, false)).to eq(true)
+    end
+  end
 
 
 

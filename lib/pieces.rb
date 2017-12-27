@@ -22,12 +22,12 @@ class Pawn
   end
 
   def can_attack(cur_coord, next_coord, same_colour)
-    return false unless (cur_coord[0].ord + 1 == next_coord[0]) || (cur_coord[0].ord - 1 == next_coord[0])
+    return false unless (cur_coord[0].ord + 1 == next_coord[0].ord) || (cur_coord[0].ord - 1 == next_coord[0].ord)
 
     if self.colour == :white
-      return false unless cur_coord[1] + 1 == next_coord[1]
+      return false unless cur_coord[1].to_i + 1 == next_coord[1].to_i
     else
-      return false unless cur_coord[1] - 1 == next_coord[1]
+      return false unless cur_coord[1].to_i - 1 == next_coord[1].to_i
     end
 
     return false if same_colour
