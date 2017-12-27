@@ -1,24 +1,15 @@
-require_relative 'board.rb'
-
-class Piece
-  attr_accessor :colour
-
-  def initialize(colour)
-    @colour = colour
-  end
-end
-
-class Pawn < Piece
+class Pawn
   attr_accessor :never_moved
 
-  def initialize()
-    @never_moved = true
+  def initialize(colour, never_moved = true)
+    @colour = colour
+    @never_moved = never_moved
   end
 
   def can_move(cur_coord, next_coord)
     return false if cur_coord[0] != next_coord[0]
 
-    if self.colour == "white"
+    if self.colour == :white
       return false unless (cur_coord[1].to_i + 1 == next_coord[1].to_i) ||
                           (cur_coord[1].to_i + 2 == next_coord[1].to_i)
       return false if (cur_coord[1].to_i + 2 == next_coord[1].to_i) && never_moved
@@ -32,16 +23,16 @@ class Pawn < Piece
     return true
   end
 
-  def can_attack(cur_coord, next_coord)
+  def can_attack(cur_coord, next_coord, same_colour)
     return false unless (cur_coord[0].ord + 1 == next_coord[0]) || (cur_coord[0].ord - 1 == next_coord[0])
 
-    if self.colour == "white"
+    if self.colour == :white
       return false unless cur_coord[1] + 1 == next_coord[1]
     else
       return false unless cur_coord[1] - 1 == next_coord[1]
     end
 
-    return false if (board[next_coord].colour == board[cur_coord].colour) || (board[next_coord].nil?)
+    return false if same_colour
     return true
   end
 
@@ -55,28 +46,28 @@ class Pawn < Piece
 
 end
 
-class Rook < Piece
+class Rook
   attr_accessor :never_moved
 
-  def initialize()
-    @never_moved = true
+  def initialize(never_moved = true)
+    @never_moved = never_moved
   end
 
 end
 
-class Bishop < Piece
+class Bishop
 end
 
-class Knight < Piece
+class Knight
 end
 
-class Queen < Piece
+class Queen
 end
 
-class King < Piece
+class King
   attr_accessor :never_moved
 
-  def initialize()
-    @never_moved = true
+  def initialize(never_moved = true)
+    @never_moved = never_moved
   end
 end
