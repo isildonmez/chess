@@ -32,11 +32,17 @@ class Pawn < Piece
     return true
   end
 
-  # TODO: look again, couldn't finish
   def can_attack(cur_coord, next_coord)
+    return false unless (cur_coord[0].ord + 1 == next_coord[0]) || (cur_coord[0].ord - 1 == next_coord[0])
+
+    if self.colour == "white"
+      return false unless cur_coord[1] + 1 == next_coord[1]
+    else
+      return false unless cur_coord[1] - 1 == next_coord[1]
+    end
+
     return false if (board[next_coord].colour == board[cur_coord].colour) || (board[next_coord].nil?)
-    return false unless (next_coord[0].ord == cur_coord[0].ord + 1) && ()
-    return false
+    return true
   end
 
   def pawn_promotion
