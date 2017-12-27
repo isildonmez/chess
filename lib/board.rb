@@ -5,13 +5,13 @@ require_relative './pieces'
 class Board
   attr_accessor :board
 
+  # TODO: other pieces
   def initialize()
     @board = {}
     ["a","b","c","d","e","f","g","h"].each do |letter|
       @board[letter+"2"] = Pawn.new("white")
       @board[letter+"7"] = Pawn.new("black")
     end
-    p @board
   end
 end
 

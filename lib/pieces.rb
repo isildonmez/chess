@@ -1,5 +1,5 @@
 class Pawn
-  attr_accessor :never_moved
+  attr_accessor :never_moved, :colour
 
   def initialize(colour, never_moved = true)
     @colour = colour
