@@ -9,10 +9,10 @@ class Piece
 end
 
 class Pawn < Piece
-  attr_accessor :first_double_move
+  attr_accessor :never_moved
 
-  def initialize(never_moved = true)
-    @never_moved = never_moved
+  def initialize()
+    @never_moved = true
   end
 
   def can_move(cur_coord, next_coord)
@@ -45,15 +45,21 @@ class Pawn < Piece
     return true
   end
 
+  # TODO
+  def en_passant
+  end
+
+  # TODO
   def pawn_promotion
   end
+
 end
 
 class Rook < Piece
   attr_accessor :never_moved
 
-  def initialize(never_moved = true)
-    @never_moved = never_moved
+  def initialize()
+    @never_moved = true
   end
 
 end
@@ -70,7 +76,7 @@ end
 class King < Piece
   attr_accessor :never_moved
 
-  def initialize(never_moved = true)
-    @never_moved = never_moved
+  def initialize()
+    @never_moved = true
   end
 end
