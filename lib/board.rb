@@ -9,10 +9,14 @@ class Board
   def initialize()
     @board = {}
     ["a","b","c","d","e","f","g","h"].each do |letter|
-      @board[letter+"2"] = Pawn.new("white")
-      @board[letter+"7"] = Pawn.new("black")
+      for hor in 3..6
+        @board[(letter+"#{hor}").to_sym] = nil
+      end
+      @board[(letter+"2").to_sym] = Pawn.new(:white)
+      @board[(letter+"7").to_sym] = Pawn.new(:black)
     end
   end
 end
 
-game_board = Board.new
+game = Board.new
+p game.board

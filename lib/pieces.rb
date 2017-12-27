@@ -1,25 +1,23 @@
 class Pawn
-  attr_accessor :never_moved, :colour
+  attr_accessor :colour
 
-  def initialize(colour, never_moved = true)
+  def initialize(colour)
     @colour = colour
-    @never_moved = never_moved
   end
 
-  def can_move(cur_coord, next_coord)
+  def can_move(cur_coord, next_coord, free_coord)
     return false if cur_coord[0] != next_coord[0]
-
     if self.colour == :white
       return false unless (cur_coord[1].to_i + 1 == next_coord[1].to_i) ||
                           (cur_coord[1].to_i + 2 == next_coord[1].to_i)
-      return false if (cur_coord[1].to_i + 2 == next_coord[1].to_i) && never_moved
+      return false if (cur_coord[1].to_i + 2 == next_coord[1].to_i) && !(cur_coord[1].to_i == 2)
     else
       return false unless (cur_coord[1].to_i - 1 == next_coord[1].to_i) ||
                           (cur_coord[1].to_i - 2 == next_coord[1].to_i)
-      return false if (cur_coord[1].to_i - 2 == next_coord[1].to_i) && never_moved
+      return false if (cur_coord[1].to_i - 2 == next_coord[1].to_i) && !(cur_coord[1].to_i == 7)
     end
 
-    return false unless next_coord.nil?
+    return false unless free_coord
     return true
   end
 
