@@ -17,23 +17,29 @@ class Board
     end
   end
 
+  def get(coord)
+    @board[coord].nil? ? " " : @board[coord].symbol
+  end
+
   def visualise
     horizontal_coordinates = "    " + ["a", "b", "c", "d", "e", "f", "g", "h"].join("   ")
     top_line     = ("  " + "┏━━━" * 8 + "┓")
-    lines =[["8 ┃ a8 ┃ b8 ┃ c8 ┃ d8 ┃ e8 ┃ f8 ┃ g8 ┃ h8 ┃ 8"],
-            ["7 ┃ a7 ┃ b7 ┃ c7 ┃ d7 ┃ e7 ┃ f7 ┃ g7 ┃ h7 ┃ 7"],
-            ["6 ┃ a6 ┃ b6 ┃ c6 ┃ d6 ┃ e6 ┃ f6 ┃ g6 ┃ h6 ┃ 6"],
-            ["5 ┃ a5 ┃ b5 ┃ c5 ┃ d5 ┃ e5 ┃ f5 ┃ g5 ┃ h5 ┃ 5"],
-            ["4 ┃ a4 ┃ b4 ┃ c4 ┃ d4 ┃ e4 ┃ f4 ┃ g4 ┃ h4 ┃ 4"],
-            ["3 ┃ a3 ┃ b3 ┃ c3 ┃ d3 ┃ e3 ┃ f3 ┃ g3 ┃ h3 ┃ 3"],
-            ["2 ┃ a2 ┃ b2 ┃ c2 ┃ d2 ┃ e2 ┃ f2 ┃ g2 ┃ h2 ┃ 2"],
-            ["1 ┃ a1 ┃ b1 ┃ c1 ┃ d1 ┃ e1 ┃ f1 ┃ g1 ┃ h1 ┃ 1"]]
+    lines =[["8 ┃ #{get(:a8)} ┃ #{get(:b8)} ┃ #{get(:c8)} ┃ #{get(:d8)} ┃ #{get(:e8)} ┃ #{get(:f8)} ┃ #{get(:g8)} ┃ #{get(:h8)} ┃ 8"],
+            ["7 ┃ #{get(:a7)} ┃ #{get(:b7)} ┃ #{get(:c7)} ┃ #{get(:d7)} ┃ #{get(:e7)} ┃ #{get(:f7)} ┃ #{get(:g7)} ┃ #{get(:h7)} ┃ 7"],
+            ["6 ┃ #{get(:a6)} ┃ #{get(:b6)} ┃ #{get(:c6)} ┃ #{get(:d6)} ┃ #{get(:e6)} ┃ #{get(:f6)} ┃ #{get(:g6)} ┃ #{get(:h6)} ┃ 6"],
+            ["5 ┃ #{get(:a5)} ┃ #{get(:b5)} ┃ #{get(:c5)} ┃ #{get(:d5)} ┃ #{get(:e5)} ┃ #{get(:f5)} ┃ #{get(:g5)} ┃ #{get(:h5)} ┃ 5"],
+            ["4 ┃ #{get(:a4)} ┃ #{get(:b4)} ┃ #{get(:c4)} ┃ #{get(:d4)} ┃ #{get(:e4)} ┃ #{get(:f4)} ┃ #{get(:g4)} ┃ #{get(:h4)} ┃ 4"],
+            ["3 ┃ #{get(:a3)} ┃ #{get(:b3)} ┃ #{get(:c3)} ┃ #{get(:d3)} ┃ #{get(:e3)} ┃ #{get(:f3)} ┃ #{get(:g3)} ┃ #{get(:h3)} ┃ 3"],
+            ["2 ┃ #{get(:a2)} ┃ #{get(:b2)} ┃ #{get(:c2)} ┃ #{get(:d2)} ┃ #{get(:e2)} ┃ #{get(:f2)} ┃ #{get(:g2)} ┃ #{get(:h2)} ┃ 2"],
+            ["1 ┃ #{get(:a1)} ┃ #{get(:b1)} ┃ #{get(:c1)} ┃ #{get(:d1)} ┃ #{get(:e1)} ┃ #{get(:f1)} ┃ #{get(:g1)} ┃ #{get(:h1)} ┃ 1"]]
     middle_line  = ("  "+ "┣━━━" * 8 + "┫")
     bottom_line  = ("  " + "┗━━━" * 8 + "┛")
     body = lines.join("\n" + middle_line + "\n")
 
-    empty_board = [horizontal_coordinates, top_line, body,
+    clean_board = [horizontal_coordinates, top_line, body,
                     bottom_line, horizontal_coordinates].join("\n")
+
+
   end
 
   def update

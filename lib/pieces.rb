@@ -1,8 +1,10 @@
 class Pawn
-  attr_accessor :colour
+  attr_accessor :colour, :symbol
 
   def initialize(colour)
     @colour = colour
+    @symbol = "♙" if @colour == :white
+    @symbol = "♟" if @colour == :black
   end
 
   def can_move(cur_coord, next_coord, free_coord)
