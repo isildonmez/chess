@@ -16,7 +16,22 @@ class Board
       @board[(letter+"7").to_sym] = Pawn.new(:black)
     end
   end
+
+  def visualise
+    horizontal_coordinates = "  " + ["a", "b", "c", "d", "e", "f", "g", "h"].join("   ")
+    top_line     = ("┏━━━" * 8 + "┓")
+    middle1   = ("┃   " * 8 + "┃")
+    middle2   = ("┣━━━" * 8 + "┫")
+    bottom_line  = ("┗━━━" * 8 + "┛")
+    middle_line  = [middle1, middle2].join"\n"
+
+    empty_board = [horizontal_coordinates, top_line, ([middle_line] * 7).join("\n"),
+                    middle1, bottom_line, horizontal_coordinates].join("\n")
+  end
+
+  def update
+  end
 end
 
 game = Board.new
-p game.board
+puts game.visualise
