@@ -40,12 +40,15 @@ class Board
                         bottom_line, horizontal_coordinates].join("\n")
   end
 
+  def coord_occupied?(coord)
+    return @board[coord].nil? ? false : true
+  end
+
   def update(cur_coord, next_coord)
     @board[next_coord] = @board[cur_coord]
     @board[cur_coord] = nil
     @board
   end
 end
-
 
 
