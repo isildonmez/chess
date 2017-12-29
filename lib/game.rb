@@ -5,6 +5,38 @@ require_relative 'board'
 # check en passant if one of the pawn is on the 4/5th rank
 
 class Game
+
+  def initialize
+  end
+
+  def rules
+    "Welcome to chess game!\n"
+    "Each player should play by turns\n"
+    "And white player plays first\n"
+  end
+
+  def check_cur_coord(cur_coord)
+    return nil if b.board[cur_coord].nil?
+    return false if cur_coord.length != 2
+    return false unless ["a", "b", "c", "d", "e", "f", "g", "h"].include?(cur_coord[0])
+    return false unless ["1", "2", "3", "4", "5", "6", "7", "8"].include?(cur_coord[1])
+    return true
+  end
+
 end
 
-chess = Game.new
+if __FILE__ == $0
+  chess = Game.new
+  b = Board.new
+  puts chess.rules
+  puts b.visualise
+
+  puts "Please enter a coordinate of a piece you want to move. (e.g. a4)"
+  cur_coord = gets.chomp.to_sym
+  until check_cur_coord(cur_coord)
+    puts "Please enter a coordinate that is not empty" if check_cur_coord(cur_coord).nil?
+    puts "Please enter a valid coordinate. (e.g. a4, d5)" unless check_cur_coord(cur_coord)
+    cur_coord = gets.chomp.to_sym
+  end
+
+end
