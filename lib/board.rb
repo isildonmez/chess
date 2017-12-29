@@ -36,10 +36,8 @@ class Board
     bottom_line  = ("  " + "┗━━━" * 8 + "┛")
     body = lines.join("\n" + middle_line + "\n")
 
-    clean_board = [horizontal_coordinates, top_line, body,
-                    bottom_line, horizontal_coordinates].join("\n")
-
-
+    visualised_board = [horizontal_coordinates, top_line, body,
+                        bottom_line, horizontal_coordinates].join("\n")
   end
 
   def update

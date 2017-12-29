@@ -10,6 +10,11 @@ describe Pawn do
       expect(w_pawn.colour).to eq(:white)
       expect(b_pawn.colour).to eq(:black)
     end
+
+    it "sets its symbol" do
+      expect(w_pawn.symbol).to eq("♙")
+      expect(b_pawn.symbol).to eq("♟")
+    end
   end
 
   describe "#can_move" do
