@@ -7,7 +7,7 @@ describe Game do
 
   describe "#check_cur_coord" do
     it "returns :occupied" do
-      expect(chess.check_cur_coord(:a4)).to eql(:occupied)
+      expect(chess.check_cur_coord(:a4)).to eql(:not_occupied)
     end
 
     it "returns :invalid" do
