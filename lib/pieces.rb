@@ -7,7 +7,7 @@ class Pawn
     @symbol = "♟" if @colour == :black
   end
 
-  def can_move(cur_coord, next_coord)
+  def can_move?(cur_coord, next_coord)
     return false if cur_coord[0] != next_coord[0]
     if self.colour == :white
       return false unless (cur_coord[1].to_i + 1 == next_coord[1].to_i) ||
@@ -22,7 +22,7 @@ class Pawn
     return true
   end
 
-  def can_attack(cur_coord, next_coord)
+  def can_attack?(cur_coord, next_coord)
     return false unless (cur_coord[0].ord + 1 == next_coord[0].ord) || (cur_coord[0].ord - 1 == next_coord[0].ord)
 
     if self.colour == :white

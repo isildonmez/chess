@@ -42,22 +42,36 @@ if __FILE__ == $0
   puts b.visualise
   game_over = false
   turn = 1
+  accepted_move = false
 
   until game_over
     player = turn.odd? ? :white : :black
-    puts "#{player} player, please enter a coordinate of a piece you want to move. (e.g. a4)"
-    cur_coord = gets.chomp.to_sym
-    until chess.valid_and_occupied?(cur_coord)
-      puts "Please enter a valid coordinate which is also not empty. (e.g. a4, d5)"
-      cur_coord = gets.chomp.to_sym
-    end
-    puts "#{player} player, please enter a new coordinate as a move for this piece. (e.g. b6)"
-    new_coord = gets.chomp.to_sym
-    until chess.valid_coord?(new_coord)
-      puts "Please enter a valid coordinate"
-      new_coord = gets.chomp.to_sym
-    end
 
+    until accepted_move
+      puts "#{player} player, please enter a coordinate of a piece you want to move. (e.g. a4)"
+      cur_coord = gets.chomp.to_sym
+      until chess.valid_and_occupied?(cur_coord)
+        puts "Please enter a valid coordinate which is also not empty. (e.g. a4, d5)"
+        cur_coord = gets.chomp.to_sym
+      end
+      puts "#{player} player, please enter a new coordinate as a move for this piece. (e.g. b6)"
+      new_coord = gets.chomp.to_sym
+      until chess.valid_coord?(new_coord)
+        puts "Please enter a valid coordinate"
+        new_coord = gets.chomp.to_sym
+      end
+
+      cur_piece = @board[cur_coord]
+      if @board[new_coord].nil?
+        next unless cur_piece.can_move?(cur_coord, new_coord)
+      else
+        next if cur_piece.colour == @board[new_coord].colour
+        next unless cur_piece.can_attack?(cur_coord, new_coord)
+      end
+
+      
+
+    end
     a_winner?(player)
   end
 
