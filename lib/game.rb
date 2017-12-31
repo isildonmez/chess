@@ -39,7 +39,7 @@ end
 if __FILE__ == $0
   chess = Game.new(Board.new)
   puts chess.rules
-  puts b.visualise
+  puts @board.visualise
   game_over = false
   turn = 1
   accepted_move = false
@@ -69,9 +69,12 @@ if __FILE__ == $0
         next unless cur_piece.can_attack?(cur_coord, new_coord)
       end
 
-      
+      next unless @board.empty_between?(cur_coord, new_coord)
+      accepted_move = true
+
 
     end
+    accepted_move = false
     a_winner?(player)
   end
 

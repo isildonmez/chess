@@ -30,4 +30,24 @@ describe Board do
     end
   end
 
+  describe "#empty_between?" do
+    context "when vertical" do
+      it "returns false" do
+        expect(b.empty_between?(:a2, :a8)).to eql(false)
+      end
+
+      it "returns false" do
+        expect(b.empty_between?(:a8, :a2)).to eql(false)
+      end
+
+      it "returns true" do
+        expect(b.empty_between?(:c7, :c6)).to eql(true)
+      end
+
+      it "returns true" do
+        expect(b.empty_between?(:b2, :b5)).to eql(true)
+      end
+    end
+  end
+
 end
