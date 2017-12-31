@@ -5,43 +5,43 @@ describe Game do
   subject(:chess) { Game.new(Board.new) }
 
 
-  describe "#check_cur_coord" do
-    it "returns :occupied" do
-      expect(chess.check_cur_coord(:a4)).to eql(:not_occupied)
+  describe "#valid_and_occupied?" do
+    it "returns false" do
+      expect(chess.valid_and_occupied?(:a4)).to eql(false)
     end
 
-    it "returns :invalid" do
-      expect(chess.check_cur_coord(:k4)).to eql(:invalid)
+    it "returns false" do
+      expect(chess.valid_and_occupied?(:k4)).to eql(false)
     end
 
-    it "returns :invalid" do
-      expect(chess.check_cur_coord(:d9)).to eql(:invalid)
+    it "returns false" do
+      expect(chess.valid_and_occupied?(:d9)).to eql(false)
     end
 
-    it "returns :invalid" do
-      expect(chess.check_cur_coord(:d32)).to eql(:invalid)
+    it "returns false" do
+      expect(chess.valid_and_occupied?(:d32)).to eql(false)
     end
 
-    it "returns :valid" do
-      expect(chess.check_cur_coord(:a2)).to eql(:valid)
+    it "returns true" do
+      expect(chess.valid_and_occupied?(:a2)).to eql(true)
     end
   end
 
-  describe "#check_new_coord" do
-    it "returns :invalid" do
-      expect(chess.check_new_coord(:m5)).to eql(:invalid)
+  describe "#valid_coord?" do
+    it "returns false" do
+      expect(chess.valid_coord?(:m5)).to eql(false)
     end
 
-    it "returns :invalid" do
-      expect(chess.check_new_coord(:h0)).to eql(:invalid)
+    it "returns false" do
+      expect(chess.valid_coord?(:h0)).to eql(false)
     end
 
-    it "returns :invalid" do
-      expect(chess.check_new_coord(:e10)).to eql(:invalid)
+    it "returns false" do
+      expect(chess.valid_coord?(:e10)).to eql(false)
     end
 
-    it "returns :valid" do
-      expect(chess.check_new_coord(:f5)).to eql(:valid)
+    it "returns true" do
+      expect(chess.valid_coord?(:f5)).to eql(true)
     end
   end
 

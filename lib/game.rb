@@ -16,19 +16,17 @@ class Game
     "And white player plays first\n"
   end
 
-  def check_cur_coord(cur_coord)
-    return :invalid if cur_coord.length != 2
-    return :invalid unless ["a", "b", "c", "d", "e", "f", "g", "h"].include?(cur_coord[0])
-    return :invalid unless ["1", "2", "3", "4", "5", "6", "7", "8"].include?(cur_coord[1])
-    return :not_occupied unless @board.coord_occupied?(cur_coord)
-    return :valid
+  def valid_coord?(coord)
+    return false if coord.length != 2
+    return false unless ["a", "b", "c", "d", "e", "f", "g", "h"].include?(coord[0])
+    return false unless ["1", "2", "3", "4", "5", "6", "7", "8"].include?(coord[1])
+    return true
   end
 
-  def check_new_coord(new_coord)
-    return :invalid if new_coord.length != 2
-    return :invalid unless ["a", "b", "c", "d", "e", "f", "g", "h"].include?(new_coord[0])
-    return :invalid unless ["1", "2", "3", "4", "5", "6", "7", "8"].include?(new_coord[1])
-    return :valid
+  def valid_and_occupied?(coord)
+    return false unless valid_coord?(coord)
+    return false unless @board.coord_occupied?(coord)
+    return true
   end
 
   # TODO
@@ -49,14 +47,13 @@ if __FILE__ == $0
     player = turn.odd? ? :white : :black
     puts "#{player} player, please enter a coordinate of a piece you want to move. (e.g. a4)"
     cur_coord = gets.chomp.to_sym
-    until chess.check_cur_coord(cur_coord) == :valid
-      puts "Please enter a coordinate that is not empty" if check_cur_coord(cur_coord) == :occupied
-      puts "Please enter a valid coordinate. (e.g. a4, d5)" unless check_cur_coord(cur_coord) == :invalid
+    until chess.valid_and_occupied?(cur_coord)
+      puts "Please enter a valid coordinate which is also not empty. (e.g. a4, d5)"
       cur_coord = gets.chomp.to_sym
     end
-    puts "Please enter a new coordinate for this piece. (e.g. b6)"
+    puts "#{player} player, please enter a new coordinate as a move for this piece. (e.g. b6)"
     new_coord = gets.chomp.to_sym
-    until chess.check_new_coord(new_coord) == :valid
+    until chess.valid_coord?(new_coord)
       puts "Please enter a valid coordinate"
       new_coord = gets.chomp.to_sym
     end
