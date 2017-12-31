@@ -22,6 +22,7 @@ class Pawn
     return true
   end
 
+  # check en passant if one of the pawn is on the 4/5th rank
   def can_attack?(cur_coord, next_coord)
     return false unless (cur_coord[0].ord + 1 == next_coord[0].ord) || (cur_coord[0].ord - 1 == next_coord[0].ord)
 

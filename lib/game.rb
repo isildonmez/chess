@@ -1,9 +1,6 @@
 require_relative 'pieces'
 require_relative 'board'
 
-# never_moved = false if can_move || can_attack == true
-# check en passant if one of the pawn is on the 4/5th rank
-
 class Game
 
   def initialize(board)
@@ -71,9 +68,9 @@ if __FILE__ == $0
 
       next unless @board.empty_between?(cur_coord, new_coord)
       accepted_move = true
-
-
     end
+
+    @board.update(cur_coord, new_coord)
     accepted_move = false
     a_winner?(player)
   end

@@ -44,8 +44,8 @@ class Board
     return @board[coord].nil? ? false : true
   end
 
-  def update(cur_coord, next_coord)
-    @board[next_coord] = @board[cur_coord]
+  def update(cur_coord, new_coord)
+    @board[new_coord] = @board[cur_coord]
     @board[cur_coord] = nil
     @board
   end
