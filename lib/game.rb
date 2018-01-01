@@ -66,7 +66,9 @@ if __FILE__ == $0
         next unless cur_piece.can_attack?(cur_coord, new_coord)
       end
 
+      # if (cur_piece.is_a? Knight == false)
       next unless @board.empty_between?(cur_coord, new_coord)
+      # end
       accepted_move = true
     end
 

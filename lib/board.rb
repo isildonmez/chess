@@ -64,6 +64,7 @@ class Board
           return false unless @board[(i.chr + num).to_sym].nil?
         end
       end
+      return true
     end
 
     # Vertical
@@ -82,9 +83,29 @@ class Board
       return true
     end
 
+    cur_letter_ord = cur_coord[0].ord
+    cur_num = cur_coord[1].to_i
+    new_letter_ord = new_coord[0].ord
+    new_num = new_coord[1].to_i
+    difference = new_num - cur_num
+    return true if (difference).abs == 1
+
     # Forward Diagonal
+    if (cur_letter_ord - new_letter_ord) == (cur_num - new_num)
+      if difference > 0
+        for i in 1...difference
+          return false unless @board[((cur_letter_ord + i).chr + (cur_num + i).to_s).to_sym].nil?
+        end
+      else
+        for i in 1...(difference.abs)
+          return false unless @board[((cur_letter_ord - i).chr + (cur_num - i).to_s).to_sym].nil?
+        end
+      end
+      return true
+    end
 
     # Backward Diagonal
+
   end
 
 end

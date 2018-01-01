@@ -31,7 +31,7 @@ describe Board do
   end
 
   # TODO: add test after adding other pieces
-  # describe "#empty_between?" do
+  describe "#empty_between?" do
   #   context "when horizontal" do
 
   #     it "returns false" do
@@ -64,6 +64,32 @@ describe Board do
         expect(b.empty_between?(:b2, :b5)).to eql(true)
       end
     end
+
+    context "when forward diagonal" do
+      it "returns false" do
+        expect(b.empty_between?(:a1, :c3)).to eql(false)
+      end
+
+      it "returns false" do
+        expect(b.empty_between?(:c3, :a1)).to eql(false)
+      end
+
+      it "returns true" do
+        expect(b.empty_between?(:a1, :b2)).to eql(true)
+        expect(b.empty_between?(:b2, :a1)).to eql(true)
+        expect(b.empty_between?(:b2, :c3)).to eql(true)
+        expect(b.empty_between?(:c3, :b2)).to eql(true)
+      end
+
+      it "returns true" do
+        expect(b.empty_between?(:b2, :f6)).to eql(true)
+      end
+    end
+
+
   end
+
+
+
 
 end
