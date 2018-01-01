@@ -1,4 +1,5 @@
 require_relative '../lib/board'
+require_relative '../lib/pieces'
 
 describe Board do
   subject(:b) { Board.new }
@@ -27,6 +28,23 @@ describe Board do
       b.update(:a2, :a4)
       expect(b.board[:a2]).to eql(nil)
       expect(b.board[:a4]).to eql(a_pawn)
+    end
+  end
+
+  describe "#en_passant?" do
+    it "returns true" do
+      b.board[:b4] = Pawn.new(:black)
+      b.board[:c4] = Pawn.new(:white)
+      b.board[:c4].turn_of_first_move = 10
+      puts b.visualise
+      expect(b.en_passant?(:b4, :c3, 11)).to eql(true)
+    end
+
+    it "returns false" do
+      b.board[:e5] = Pawn.new(:white)
+      b.board[:f5] = Pawn.new(:black)
+      b.board[:f5].turn_of_first_move = 2
+      expect(b.en_passant?(:e5, :d6, 4)).to eql(false)
     end
   end
 
