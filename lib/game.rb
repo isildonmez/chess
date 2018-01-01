@@ -2,6 +2,7 @@ require_relative 'pieces'
 require_relative 'board'
 
 class Game
+  attr_accessor :board
 
   def initialize(board)
     @board = board
@@ -36,7 +37,7 @@ end
 if __FILE__ == $0
   chess = Game.new(Board.new)
   puts chess.rules
-  puts @board.visualise
+  puts chess.board.visualise
   game_over = false
   turn = 1
   accepted_move = false
@@ -59,19 +60,19 @@ if __FILE__ == $0
       end
 
       # if (cur_piece.is_a? Knight == false)
-      next unless @board.empty_between?(cur_coord, new_coord)
+      next unless chess.board.empty_between?(cur_coord, new_coord)
       # end
 
-      cur_piece = @board[cur_coord]
-      if @board[new_coord].nil?
+      cur_piece = chess.board.get(cur_coord)
+      if chess.board.get(new_coord).nil?
         if cur_piece.is_a? Pawn
-          next unless (@board.en_passant?(cur_coord, new_coord, turn)) ||
+          next unless (chess.board.en_passant?(cur_coord, new_coord, turn)) ||
                       cur_piece.can_move?(cur_coord, new_coord)
         else
           next unless cur_piece.can_move?(cur_coord, new_coord)
         end
       else
-        next if cur_piece.colour == @board[new_coord].colour
+        next if cur_piece.colour == chess.board.get(new_coord).colour
         next unless cur_piece.can_attack?(cur_coord, new_coord)
       end
 
@@ -82,7 +83,7 @@ if __FILE__ == $0
                                               ((cur_coord[1] - new_coord[1]).abs == 2)
     end
 
-    @board.update(cur_coord, new_coord)
+    chess.board.update(cur_coord, new_coord)
     a_winner?(player)
     accepted_move = false
     turn += 1

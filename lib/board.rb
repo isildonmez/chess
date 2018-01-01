@@ -15,6 +15,10 @@ class Board
     end
   end
 
+  def get(coord)
+    return @board[coord]
+  end
+
   def sym(coord)
     @board[coord].nil? ? " " : @board[coord].symbol
   end
