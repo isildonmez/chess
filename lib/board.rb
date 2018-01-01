@@ -105,7 +105,18 @@ class Board
     end
 
     # Backward Diagonal
-
+    if (cur_letter_ord - new_letter_ord).abs == (cur_num - new_num).abs
+      if difference > 0
+        for i in 1...difference
+          return false unless @board[((cur_letter_ord - i).chr + (cur_num + i).to_s).to_sym].nil?
+        end
+      else
+        for i in 1...(difference.abs)
+          return false unless @board[((cur_letter_ord + i).chr + (cur_num - i).to_s).to_sym].nil?
+        end
+      end
+      return true
+    end
   end
 
 end

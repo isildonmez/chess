@@ -86,6 +86,26 @@ describe Board do
       end
     end
 
+    context "when backward diagonal" do
+      it "returns false" do
+        expect(b.empty_between?(:a4, :d1)).to eql(false)
+      end
+
+      it "returns false" do
+        expect(b.empty_between?(:d1, :a4)).to eql(false)
+      end
+
+      it "returns true" do
+        expect(b.empty_between?(:d1, :c2)).to eql(true)
+        expect(b.empty_between?(:c2, :d1)).to eql(true)
+        expect(b.empty_between?(:c2, :b3)).to eql(true)
+        expect(b.empty_between?(:b3, :c2)).to eql(true)
+      end
+
+      it "returns true" do
+        expect(b.empty_between?(:f2, :b6)).to eql(true)
+      end
+    end
 
   end
 
