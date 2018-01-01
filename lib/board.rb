@@ -64,6 +64,8 @@ class Board
     return false unless (cur_piece.colour == :black && opponent.colour == :white) ||
                         (cur_piece.colour == :white && opponent.colour == :black)
     return false unless opponent.turn_of_first_move == game_turn - 1
+
+    opponent = nil
     return true
   end
 

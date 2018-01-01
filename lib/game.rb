@@ -58,26 +58,28 @@ if __FILE__ == $0
         new_coord = gets.chomp.to_sym
       end
 
+      # if (cur_piece.is_a? Knight == false)
+      next unless @board.empty_between?(cur_coord, new_coord)
+      # end
+
       cur_piece = @board[cur_coord]
       if @board[new_coord].nil?
-        if (cur_piece.is_a? Pawn && @board.en_passant?(cur_coord, new_coord, turn))
-        # TODO: updating board after en_passant?()
+        if cur_piece.is_a? Pawn
+          next unless (@board.en_passant?(cur_coord, new_coord, turn)) ||
+                      cur_piece.can_move?(cur_coord, new_coord)
         else
           next unless cur_piece.can_move?(cur_coord, new_coord)
         end
-        # TODO: updating board after en_passant?
       else
         next if cur_piece.colour == @board[new_coord].colour
         next unless cur_piece.can_attack?(cur_coord, new_coord)
       end
 
-      # if (cur_piece.is_a? Knight == false)
-      next unless @board.empty_between?(cur_coord, new_coord)
-      # end
+
       accepted_move = true
-      if (cur_coord[0] == new_coord[0]) && ((cur_coord[1] - new_coord[1]).abs == 2)
-        cur_piece.turn_of_first_move == turn
-      end
+      cur_piece.turn_of_first_move == turn if cur_piece.is_a? Pawn &&
+                                              (cur_coord[0] == new_coord[0]) &&
+                                              ((cur_coord[1] - new_coord[1]).abs == 2)
     end
 
     @board.update(cur_coord, new_coord)

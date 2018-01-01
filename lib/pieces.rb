@@ -3,8 +3,8 @@ class Pawn
 
   def initialize(colour)
     @colour = colour
-    @symbol = "♙" if @colour == :white
-    @symbol = "♟" if @colour == :black
+    @symbol = "♟" if @colour == :white
+    @symbol = "♙" if @colour == :black
     @turn_of_first_move = nil
   end
 
@@ -23,7 +23,6 @@ class Pawn
     return true
   end
 
-  # TODO: have a look
   def can_attack?(cur_coord, new_coord)
     return false unless (cur_coord[0].ord + 1 == new_coord[0].ord) || (cur_coord[0].ord - 1 == new_coord[0].ord)
 
