@@ -30,22 +30,25 @@ describe Board do
     end
   end
 
-  # TODO: add test after adding other pieces
   describe "#empty_between?" do
-  #   context "when horizontal" do
 
-  #     it "returns false" do
-  #     end
+    context "when horizontal" do
+      it "returns false" do
+        expect(b.empty_between?(:a2, :c2)).to eql(false)
+      end
 
-  #     it "returns false" do
-  #     end
+      it "returns false" do
+        expect(b.empty_between?(:f7, :b7)).to eql(false)
+      end
 
-  #     it "returns true" do
-  #     end
+      it "returns true" do
+        expect(b.empty_between?(:h6, :g6)).to eql(true)
+      end
 
-  #     it "returns true" do
-  #     end
-  #   end
+      it "returns true" do
+        expect(b.empty_between?(:d5, :f5)).to eql(true)
+      end
+    end
 
     context "when vertical" do
       it "returns false" do
