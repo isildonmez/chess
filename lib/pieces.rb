@@ -1,10 +1,11 @@
 class Pawn
-  attr_accessor :colour, :symbol
+  attr_accessor :colour, :symbol, :turn_of_first_move
 
   def initialize(colour)
     @colour = colour
     @symbol = "♙" if @colour == :white
     @symbol = "♟" if @colour == :black
+    @turn_of_first_move = nil
   end
 
   def can_move?(cur_coord, next_coord)
@@ -22,8 +23,8 @@ class Pawn
     return true
   end
 
-  # check en passant if one of the pawn is on the 4/5th rank
   def can_attack?(cur_coord, next_coord)
+    if self.colour
     return false unless (cur_coord[0].ord + 1 == next_coord[0].ord) || (cur_coord[0].ord - 1 == next_coord[0].ord)
 
     if self.colour == :white
@@ -35,11 +36,12 @@ class Pawn
     return true
   end
 
-  # TODO
-  def en_passant
+  def en_passant?(game_turn, opponent_pawn)
+    return false unless opponent_pawn.turn_of_first_move - game_turn == 1
+    return true
   end
 
-  # TODO
+  # TODO: after other pieces
   def pawn_promotion
   end
 

@@ -60,7 +60,12 @@ if __FILE__ == $0
 
       cur_piece = @board[cur_coord]
       if @board[new_coord].nil?
-        next unless cur_piece.can_move?(cur_coord, new_coord)
+        if cur_piece.is_a? Pawn
+          next unless (cur_piece.can_move?(cur_coord, new_coord) || cur_piece.en_passant)
+        else
+          next unless cur_piece.can_move?(cur_coord, new_coord)
+        end
+        # TODO: updating board after en_passant
       else
         next if cur_piece.colour == @board[new_coord].colour
         next unless cur_piece.can_attack?(cur_coord, new_coord)
@@ -70,11 +75,15 @@ if __FILE__ == $0
       next unless @board.empty_between?(cur_coord, new_coord)
       # end
       accepted_move = true
+      if (cur_coord[0] == new_coord[0]) && ((cur_coord[1] - new_coord[1]).abs == 2)
+        cur_piece.turn_of_first_move == turn
+      end
     end
 
     @board.update(cur_coord, new_coord)
-    accepted_move = false
     a_winner?(player)
+    accepted_move = false
+    turn += 1
   end
 
 end
