@@ -52,11 +52,24 @@ class Board
 
   def empty_between?(cur_coord, new_coord)
     # Horizontal
+    if cur_coord[1] == new_coord[1]
+      num = cur_coord[1]
+      return true if (new_coord[0].ord - cur_coord[0].ord).abs == 1
+      if new_coord[0].ord > cur_coord[0].ord
+        for i in (cur_coord[0].ord + 1)...(new_coord[0].ord)
+          return false unless @board[(i.chr + num).to_sym].nil?
+        end
+      else
+        for i in (new_coord[0].ord + 1)...(cur_coord[0].ord)
+          return false unless @board[(i.chr + num).to_sym].nil?
+        end
+      end
+    end
 
     # Vertical
     if cur_coord[0] == new_coord[0]
       letter = cur_coord[0]
-      return true if (new_coord[0].to_i - cur_coord[0].to_i).abs == 1
+      return true if (new_coord[1].to_i - cur_coord[1].to_i).abs == 1
       if new_coord[1].to_i > cur_coord[1].to_i
         for i in (cur_coord[1].to_i + 1)...(new_coord[1].to_i)
           return false unless @board[(letter + i.to_s).to_sym].nil?
