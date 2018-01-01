@@ -50,6 +50,24 @@ class Board
     @board
   end
 
+  def en_passant?(cur_coord, new_coord, game_turn)
+    cur_piece = @board[cur_coord]
+    return false unless cur_piece.can_attack?
+
+    if @board[cur_coord].colour == :black
+      return false if cur_coord[1] != 4
+      opponent = @board[(new_coord[0] + (new_coord[1].to_i + 1).to_s).to_sym]
+    else
+      return false if cur_coord[1] != 5
+      opponent = @board[(new_coord[0] + (new_coord[1].to_i - 1).to_s).to_sym]
+    end
+    return false if opponent.nil?
+    return false unless opponent.is_a? Pawn
+    return false unless (cur_piece.colour == :black && opponent.colour == :white) ||
+                        (cur_piece.colour == :white && opponent.colour == :black)
+    return false unless opponent.turn_of_first_move == game_turn - 1
+  end
+
   def empty_between?(cur_coord, new_coord)
     # Horizontal
     if cur_coord[1] == new_coord[1]
