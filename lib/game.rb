@@ -32,6 +32,10 @@ class Game
     return game_over = false
   end
 
+  def right_coloured_piece(player, coord)
+    return player == @board.get(coord).colour ? true : false
+  end
+
 end
 
 if __FILE__ == $0
@@ -47,13 +51,13 @@ if __FILE__ == $0
 
     # TODO: Players should take their pieces.
     until accepted_move
-      puts "#{player} player, please enter a coordinate of a piece you want to move. (e.g. a4)"
+      puts "#{player.capitalize} player, please enter the coordinate of a piece you want to move. (e.g. a4)"
       cur_coord = gets.chomp.to_sym
-      until chess.valid_and_occupied?(cur_coord)
-        puts "Please enter a valid coordinate which is also not empty. (e.g. a4, d5)"
+      until (chess.valid_and_occupied?(cur_coord) && right_coloured_piece(player, cur_coord)
+        puts "Please enter a valid coordinate. It has to be empty and the piece has to be from your pieces. (e.g. a4, d5)"
         cur_coord = gets.chomp.to_sym
       end
-      puts "#{player} player, please enter a new coordinate as a move for this piece. (e.g. b6)"
+      puts "#{player.capitalize} player, please enter a new coordinate. (e.g. b6)"
       new_coord = gets.chomp.to_sym
       until chess.valid_coord?(new_coord)
         puts "Please enter a valid coordinate"
