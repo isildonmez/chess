@@ -9,8 +9,8 @@ class Game
   end
 
   def rules
-    "Welcome to chess game!\n"
-    "Each player should play by turns\n"
+    "Welcome to chess game!\n" +
+    "Each player should play by turns\n" +
     "And white player plays first\n"
   end
 
@@ -53,7 +53,7 @@ if __FILE__ == $0
     until accepted_move
       puts "#{player.capitalize} player, please enter the coordinate of a piece you want to move. (e.g. a4)"
       cur_coord = gets.chomp.to_sym
-      until (chess.valid_and_occupied?(cur_coord) && right_coloured_piece(player, cur_coord)
+      until (chess.valid_and_occupied?(cur_coord) && chess.right_coloured_piece(player, cur_coord))
         puts "Please enter a valid coordinate. It has to be empty and the piece has to be from your pieces. (e.g. a4, d5)"
         cur_coord = gets.chomp.to_sym
       end
@@ -83,7 +83,7 @@ if __FILE__ == $0
 
 
       accepted_move = true
-      cur_piece.turn_of_first_move == turn if (cur_piece.is_a? Pawn) &&
+      cur_piece.turn_of_first_move = turn if (cur_piece.is_a? Pawn) &&
                                               (cur_coord[0] == new_coord[0]) &&
                                               ((cur_coord[1].to_i - new_coord[1].to_i).abs == 2)
     end

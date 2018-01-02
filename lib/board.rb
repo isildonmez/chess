@@ -57,19 +57,21 @@ class Board
     return false unless cur_piece.can_attack?(cur_coord, new_coord)
 
     if @board[cur_coord].colour == :black
-      return false if cur_coord[1].to_i != 4
-      opponent = @board[(new_coord[0] + (new_coord[1].to_i + 1).to_s).to_sym]
-    else
-      return false if cur_coord[1].to_i != 5
-      opponent = @board[(new_coord[0] + (new_coord[1].to_i - 1).to_s).to_sym]
-    end
-    return false if opponent.nil?
-    return false unless opponent.is_a? Pawn
-    return false unless (cur_piece.colour == :black && opponent.colour == :white) ||
-                        (cur_piece.colour == :white && opponent.colour == :black)
-    return false unless opponent.turn_of_first_move == game_turn - 1
 
-    opponent = nil
+      return false if cur_coord[1].to_i != 4
+      opponent_coord = (new_coord[0] + (new_coord[1].to_i + 1).to_s).to_sym
+    else
+
+      return false if cur_coord[1].to_i != 5
+      opponent_coord = (new_coord[0] + (new_coord[1].to_i - 1).to_s).to_sym
+    end
+    return false if @board[opponent_coord].nil?
+    return false unless @board[opponent_coord].is_a? Pawn
+    return false unless (cur_piece.colour == :black && @board[opponent_coord].colour == :white) ||
+                        (cur_piece.colour == :white && @board[opponent_coord].colour == :black)
+    return false unless @board[opponent_coord].turn_of_first_move == game_turn - 1
+
+    @board[opponent_coord] = nil
     return true
   end
 
