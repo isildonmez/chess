@@ -159,3 +159,32 @@ describe Knight do
   end
 end
 
+describe Queen do
+  subject(:w_queen) {Queen.new(:white)}
+  subject(:b_queen) {Queen.new(:black)}
+
+  describe "#initialize" do
+    it "sets its colour" do
+      expect(w_queen.colour).to eq(:white)
+      expect(b_queen.colour).to eq(:black)
+    end
+
+    it "sets its symbol" do
+      expect(w_queen.symbol).to eq("♛")
+      expect(b_queen.symbol).to eq("♕")
+    end
+  end
+
+  describe "#can_move?" do
+    it "returns false" do
+      expect(b_queen.can_move?(:d6, :e4)).to eq(false)
+      expect(w_queen.can_move?(:f5, :d4)).to eq(false)
+    end
+
+    it "returns true" do
+      expect(w_queen.can_move?(:e3, :e8)).to eq(true)
+      expect(w_queen.can_move?(:b3, :h3)).to eq(true)
+      expect(b_queen.can_move?(:d3, :g6)).to eq(true)
+    end
+  end
+end

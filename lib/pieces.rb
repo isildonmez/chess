@@ -95,6 +95,20 @@ class Knight
 end
 
 class Queen
+  attr_accessor :colour, :symbol
+
+  def initialize(colour)
+    @colour = colour
+    @symbol = "♛" if @colour == :white
+    @symbol = "♕" if @colour == :black
+  end
+
+  def can_move?(cur_coord, new_coord)
+    moves_as_a_rook = ( (cur_coord[0] != new_coord[0] && cur_coord[1] == new_coord[1]) ||
+                          (cur_coord[0] == new_coord[0] && cur_coord[1] != new_coord[1]) )
+    moves_as_a_bishop = ( ((cur_coord[0].ord - new_coord[0].ord).abs) == ((cur_coord[1].to_i - new_coord[1].to_i).abs) )
+    return (moves_as_a_rook || moves_as_a_bishop)
+  end
 end
 
 class King
