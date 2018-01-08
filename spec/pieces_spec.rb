@@ -90,3 +90,38 @@ describe Bishop do
   end
 end
 
+describe Knight do
+  subject(:w_knight) {Knight.new(:white)}
+  subject(:b_knight) {Knight.new(:black)}
+
+  describe "#initialize" do
+    it "sets its colour" do
+      expect(w_knight.colour).to eq(:white)
+      expect(b_knight.colour).to eq(:black)
+    end
+
+    it "sets its symbol" do
+      expect(w_knight.symbol).to eq("♞")
+      expect(b_knight.symbol).to eq("♘")
+    end
+  end
+
+  describe "#can_move?" do
+    it "returns false" do
+      expect(b_knight.can_move?(:c5, :d4)).to eq(false)
+      expect(w_knight.can_move?(:c5, :e3)).to eq(false)
+    end
+
+    it "returns true" do
+      expect(w_knight.can_move?(:c5, :e4)).to eq(true)
+      expect(b_knight.can_move?(:c5, :d3)).to eq(true)
+      expect(w_knight.can_move?(:c5, :b3)).to eq(true)
+      expect(w_knight.can_move?(:c5, :a4)).to eq(true)
+      expect(w_knight.can_move?(:c5, :a6)).to eq(true)
+      expect(w_knight.can_move?(:c5, :b7)).to eq(true)
+      expect(w_knight.can_move?(:c5, :d7)).to eq(true)
+      expect(w_knight.can_move?(:c5, :e6)).to eq(true)
+    end
+  end
+end
+
