@@ -13,7 +13,7 @@ describe Board do
 
   describe "#sym" do
     it "returns the symbol" do
-      expect(b.sym(:d2)).to eql("♙")
+      expect(b.sym(:d2)).to eql("♟")
     end
 
     it "returns 1 space string" do
@@ -45,6 +45,38 @@ describe Board do
       b.board[:f5] = Pawn.new(:black)
       b.board[:f5].turn_of_first_move = 2
       expect(b.en_passant?(:e5, :d6, 4)).to eql(false)
+    end
+  end
+
+  describe "#castling?" do
+    context "with a rook moved before" do
+      it "returns false" do
+        b.board[:a8] = Rook.new(:black, false)
+        b.board[:e8] = King.new(:black, true)
+        expect(b.castling?(:e8, :c8)).to eql(false)
+      end
+    end
+
+    context "with a king moved before" do
+      it "returns false" do
+        b.board[:h8] = Rook.new(:black)
+        b.board[:e8] = King.new(:black, false)
+        expect(b.castling?(:e8, :g8)).to eql(false)
+      end
+    end
+
+    context "without a rook" do
+      it "returns false" do
+        b.board[:a1] = nil
+        b.board[:e1] = King.new(:white)
+        expect(b.castling?(:e1, :c1)).to eql(false)
+      end
+    end
+
+    it "returns true" do
+      b.board[:h1] = Rook.new(:white, true)
+      b.board[:e1] = King.new(:white, true)
+      expect(b.castling?(:e1, :g1)).to eql(true)
     end
   end
 

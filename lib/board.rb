@@ -35,7 +35,7 @@ class Board
   end
 
   def get(coord)
-    return @board[coord]
+    @board[coord]
   end
 
   def sym(coord)
@@ -91,7 +91,30 @@ class Board
     return false unless @board[opponent_coord].turn_of_first_move == game_turn - 1
 
     @board[opponent_coord] = nil
-    return true
+    true
+  end
+
+  def castling?(cur_coord, new_coord)
+    cur_piece = @board[cur_coord]
+    if (new_coord[0] == "c" || new_coord[0] == "g") && cur_piece.never_moved
+      return false unless cur_coord[1] == new_coord[1]
+      if new_coord[0] == "c"
+        return false unless @board[("a" + new_coord[1]).to_sym].is_a? Rook
+        cur_rook = @board[("a" + new_coord[1]).to_sym]
+        return false unless cur_rook.never_moved
+        @board[("d" + new_coord[1]).to_sym] = cur_rook
+        @board[("a" + new_coord[1]).to_sym] = nil
+      elsif new_coord[0] == "g"
+        return false unless @board[("h" + new_coord[1]).to_sym].is_a? Rook
+        cur_rook = @board[("h" + new_coord[1]).to_sym]
+        return false unless cur_rook.never_moved
+        @board[("f" + new_coord[1]).to_sym] = cur_rook
+        @board[("h" + new_coord[1]).to_sym] = nil
+      end
+      cur_rook.never_moved = false
+      return true
+    end
+    false
   end
 
   def empty_between?(cur_coord, new_coord)
