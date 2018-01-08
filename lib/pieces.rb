@@ -112,9 +112,28 @@ class Queen
 end
 
 class King
-  attr_accessor :never_moved
+  attr_accessor :colour, :symbol, :never_moved
 
-  def initialize(never_moved = true)
+  def initialize(colour, never_moved = true)
+    @colour = colour
+    @symbol = "♚" if @colour == :white
+    @symbol = "♔" if @colour == :black
     @never_moved = never_moved
   end
+
+  def can_move?(cur_coord, new_coord)
+    to_add = [ [-1, 0], [1, 0], [0, -1], [0, 1],
+              [1, -1], [1, 1], [-1, 1], [-1, -1] ]
+    possible_new_coords = to_add.map do |el|
+      ( (cur_coord[0].ord + el[0]).chr + (cur_coord[1].to_i + el[1]).to_s ).to_sym
+    end
+
+    return possible_new_coords.include? new_coord
+  end
 end
+
+
+
+
+
+

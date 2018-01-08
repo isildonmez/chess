@@ -188,3 +188,43 @@ describe Queen do
     end
   end
 end
+
+describe King do
+  subject(:w_king) {King.new(:white)}
+  subject(:b_king) {King.new(:black, false)}
+
+  describe "#initialize" do
+    it "sets its colour" do
+      expect(w_king.colour).to eq(:white)
+      expect(b_king.colour).to eq(:black)
+    end
+
+    it "sets its symbol" do
+      expect(w_king.symbol).to eq("♚")
+      expect(b_king.symbol).to eq("♔")
+    end
+
+    it "sets its never_moved" do
+      expect(w_king.never_moved).to eq(true)
+      expect(b_king.never_moved).to eq(false)
+    end
+  end
+
+  describe "#can_move?" do
+    it "returns false" do
+      expect(b_king.can_move?(:d6, :f6)).to eq(false)
+      expect(w_king.can_move?(:f5, :f7)).to eq(false)
+    end
+
+    it "returns true" do
+      expect(b_king.can_move?(:d4, :d5)).to eq(true)
+      expect(b_king.can_move?(:d4, :d3)).to eq(true)
+      expect(b_king.can_move?(:d4, :e4)).to eq(true)
+      expect(b_king.can_move?(:d4, :c4)).to eq(true)
+      expect(w_king.can_move?(:d4, :e3)).to eq(true)
+      expect(w_king.can_move?(:d4, :e5)).to eq(true)
+      expect(w_king.can_move?(:d4, :c3)).to eq(true)
+      expect(w_king.can_move?(:d4, :c5)).to eq(true)
+    end
+  end
+end
