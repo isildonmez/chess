@@ -11,8 +11,8 @@ describe Pawn do
     end
 
     it "sets its symbol" do
-      expect(w_pawn.symbol).to eq("♙")
-      expect(b_pawn.symbol).to eq("♟")
+      expect(w_pawn.symbol).to eq("♟")
+      expect(b_pawn.symbol).to eq("♙")
     end
   end
 
@@ -59,8 +59,34 @@ describe Pawn do
       expect(b_pawn.can_attack?(:e6, :d5)).to eq(true)
     end
   end
+end
 
+describe Bishop do
+  subject(:w_bishop) {Bishop.new(:white)}
+  subject(:b_bishop) {Bishop.new(:black)}
 
+  describe "#initialize" do
+    it "sets its colour" do
+      expect(w_bishop.colour).to eq(:white)
+      expect(b_bishop.colour).to eq(:black)
+    end
 
+    it "sets its symbol" do
+      expect(w_bishop.symbol).to eq("♝")
+      expect(b_bishop.symbol).to eq("♗")
+    end
+  end
+
+  describe "#can_move?" do
+    it "returns false" do
+      expect(b_bishop.can_move?(:d6, :e4)).to eq(false)
+      expect(w_bishop.can_move?(:f5, :d4)).to eq(false)
+    end
+
+    it "returns true" do
+      expect(w_bishop.can_move?(:e3, :b6)).to eq(true)
+      expect(b_bishop.can_move?(:d5, :g8)).to eq(true)
+    end
+  end
 end
 

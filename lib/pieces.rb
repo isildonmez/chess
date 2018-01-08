@@ -51,6 +51,18 @@ class Rook
 end
 
 class Bishop
+  attr_accessor :colour, :symbol
+
+  def initialize(colour)
+    @colour = colour
+    @symbol = "♝" if @colour == :white
+    @symbol = "♗" if @colour == :black
+  end
+
+  def can_move?(cur_coord, new_coord)
+    return false unless ((cur_coord[0].ord - new_coord[0].ord).abs) == ((cur_coord[1].to_i - new_coord[1].to_i).abs)
+    return true
+  end
 end
 
 class Knight
