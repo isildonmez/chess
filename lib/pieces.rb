@@ -42,10 +42,19 @@ class Pawn
 end
 
 class Rook
-  attr_accessor :never_moved
+  attr_accessor :colour, :symbol, :never_moved
 
-  def initialize(never_moved = true)
+  def initialize(colour, never_moved = true)
+    @colour = colour
+    @symbol = "♜" if @colour == :white
+    @symbol = "♖" if @colour == :black
     @never_moved = never_moved
+  end
+
+  def can_move?(cur_coord, new_coord)
+    return false unless ( (cur_coord[0] != new_coord[0] && cur_coord[1] == new_coord[1]) ||
+                          (cur_coord[0] == new_coord[0] && cur_coord[1] != new_coord[1]) )
+    return true
   end
 
 end

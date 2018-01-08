@@ -61,6 +61,40 @@ describe Pawn do
   end
 end
 
+describe Rook do
+  subject(:w_rook) {Rook.new(:white)}
+  subject(:b_rook) {Rook.new(:black, false)}
+
+  describe "#initialize" do
+    it "sets its colour" do
+      expect(w_rook.colour).to eq(:white)
+      expect(b_rook.colour).to eq(:black)
+    end
+
+    it "sets its symbol" do
+      expect(w_rook.symbol).to eq("♜")
+      expect(b_rook.symbol).to eq("♖")
+    end
+
+    it "sets its never_moved" do
+      expect(w_rook.never_moved).to eq(true)
+      expect(b_rook.never_moved).to eq(false)
+    end
+  end
+
+  describe "#can_move?" do
+    it "returns false" do
+      expect(b_rook.can_move?(:d6, :e7)).to eq(false)
+      expect(w_rook.can_move?(:f5, :g1)).to eq(false)
+    end
+
+    it "returns true" do
+      expect(b_rook.can_move?(:d6, :d1)).to eq(true)
+      expect(w_rook.can_move?(:f2, :f8)).to eq(true)
+    end
+  end
+end
+
 describe Bishop do
   subject(:w_bishop) {Bishop.new(:white)}
   subject(:b_bishop) {Bishop.new(:black)}
