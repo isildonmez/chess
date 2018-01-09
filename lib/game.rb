@@ -63,11 +63,11 @@ if __FILE__ == $0
         new_coord = gets.chomp.to_sym
       end
 
-      if (cur_piece.is_a? Knight == false)
+      cur_piece = chess.board.get(cur_coord)
+      if !(cur_piece.is_a? Knight)
         next unless chess.board.empty_between?(cur_coord, new_coord)
       end
 
-      cur_piece = chess.board.get(cur_coord)
       if chess.board.get(new_coord).nil?
         if cur_piece.is_a? Pawn
           next unless (chess.board.en_passant?(cur_coord, new_coord, turn)) ||
@@ -80,7 +80,11 @@ if __FILE__ == $0
         end
       else
         next if cur_piece.colour == chess.board.get(new_coord).colour
-        next unless cur_piece.can_attack?(cur_coord, new_coord)
+        if cur_piece.is_a? Pawn
+          next unless cur_piece.can_attack?(cur_coord, new_coord)
+        else
+          next unless cur_piece.can_move?(cur_coord, new_coord)
+        end
       end
 
 

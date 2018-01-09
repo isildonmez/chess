@@ -34,6 +34,7 @@ class Pawn
 
     return true
   end
+
 end
 
 class Rook
@@ -67,6 +68,7 @@ class Bishop
     return false unless ((cur_coord[0].ord - new_coord[0].ord).abs) == ((cur_coord[1].to_i - new_coord[1].to_i).abs)
     return true
   end
+
 end
 
 class Knight
@@ -87,6 +89,7 @@ class Knight
 
     return possible_new_coords.include? new_coord
   end
+
 end
 
 class Queen
@@ -104,6 +107,7 @@ class Queen
     moves_as_a_bishop = ( ((cur_coord[0].ord - new_coord[0].ord).abs) == ((cur_coord[1].to_i - new_coord[1].to_i).abs) )
     return (moves_as_a_rook || moves_as_a_bishop)
   end
+
 end
 
 class King
@@ -125,6 +129,7 @@ class King
 
     return possible_new_coords.include? new_coord
   end
+
 end
 
 
