@@ -73,6 +73,13 @@ describe Board do
       end
     end
 
+    context "after pawn_promotion of opponent" do
+      it "return false" do
+        b.board[:h1] = Rook.new(:black, true)
+        b.board[:e1] = King.new(:white, true)
+        expect(b.castling?(:e1, :g1)).to eql(false)
+      end
+    end
     it "returns true" do
       b.board[:h1] = Rook.new(:white, true)
       b.board[:e1] = King.new(:white, true)

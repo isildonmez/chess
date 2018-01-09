@@ -104,12 +104,14 @@ class Board
         return false unless @board[("a" + new_coord[1]).to_sym].is_a? Rook
         cur_rook = @board[("a" + new_coord[1]).to_sym]
         return false unless cur_rook.never_moved
+        return false if cur_rook.colour != cur_piece.colour
         @board[("d" + new_coord[1]).to_sym] = cur_rook
         @board[("a" + new_coord[1]).to_sym] = nil
       elsif new_coord[0] == "g"
         return false unless @board[("h" + new_coord[1]).to_sym].is_a? Rook
         cur_rook = @board[("h" + new_coord[1]).to_sym]
         return false unless cur_rook.never_moved
+        return false if cur_rook.colour != cur_piece.colour
         @board[("f" + new_coord[1]).to_sym] = cur_rook
         @board[("h" + new_coord[1]).to_sym] = nil
       end
