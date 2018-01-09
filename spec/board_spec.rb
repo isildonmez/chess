@@ -80,10 +80,20 @@ describe Board do
         expect(b.castling?(:e1, :g1)).to eql(false)
       end
     end
+
     it "returns true" do
       b.board[:h1] = Rook.new(:white, true)
       b.board[:e1] = King.new(:white, true)
       expect(b.castling?(:e1, :g1)).to eql(true)
+    end
+  end
+
+  describe "#pawn_promotion" do
+    it "returns white Queen" do
+      b.board[:a8] = Pawn.new(:white)
+      b.pawn_promotion(:a8, "Queen")
+      expect(b.board[:a8].is_a? Queen).to eql(true)
+      expect(b.board[:a8].colour).to eql(:white)
     end
   end
 
