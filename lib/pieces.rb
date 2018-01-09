@@ -34,11 +34,6 @@ class Pawn
 
     return true
   end
-
-  # TODO: after other pieces
-  def pawn_promotion
-  end
-
 end
 
 class Rook

@@ -89,9 +89,12 @@ if __FILE__ == $0
                                               (cur_coord[0] == new_coord[0]) &&
                                               ((cur_coord[1].to_i - new_coord[1].to_i).abs == 2)
       cur_piece.never_moved = false if (cur_piece.is_a? Rook) || (cur_piece.is_a? King)
+
+      chess.board.update(cur_coord, new_coord)
+      chess.board.pawn_promotion(new_coord) if ((cur_piece.is_a? Pawn) &&
+                                                (new_coord[1] == "1" || new_coord[1] == "8") )
     end
 
-    chess.board.update(cur_coord, new_coord)
     puts chess.board.visualise
     chess.a_winner?(player)
     accepted_move = false

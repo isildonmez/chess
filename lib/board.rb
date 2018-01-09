@@ -71,6 +71,7 @@ class Board
     @board
   end
 
+  # TODO: check for the same colour
   def en_passant?(cur_coord, new_coord, game_turn)
     cur_piece = @board[cur_coord]
     return false unless cur_piece.can_attack?(cur_coord, new_coord)
@@ -94,6 +95,7 @@ class Board
     true
   end
 
+  # TODO: Write its test.
   def castling?(cur_coord, new_coord)
     cur_piece = @board[cur_coord]
     if (new_coord[0] == "c" || new_coord[0] == "g") && cur_piece.never_moved
@@ -115,6 +117,24 @@ class Board
       return true
     end
     false
+  end
+
+  def pawn_promotion(new_coord, new_piece = which_piece)
+    cur_pawn = @board[new_coord]
+    @board[new_coord] = Object.const_get(new_piece).new(cur_pawn.colour)
+  end
+
+  def which_piece
+    puts "Please which piece of the following do you want your pawn to transform  into?"
+    puts "Enter 1 for Queen, enter 2 for Knight, enter 3 for Rook, enter 4 for Bishop"
+    order = gets.chomp
+    until (order.is_a? Integer) && (order.between?(0,3))
+      puts "Please enter a valid number"
+      puts "Enter 0 for Queen, enter 1 for Knight, enter 2 for Rook, enter 3 for Bishop"
+      order = gets.chomp
+    end
+    pieces = ["Queen", "Knight", "Rook", "Bishop"]
+    pieces[order]
   end
 
   def empty_between?(cur_coord, new_coord)
