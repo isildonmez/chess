@@ -45,17 +45,30 @@ class Board
   def visualise
     horizontal_coordinates = "    " + ["a", "b", "c", "d", "e", "f", "g", "h"].join("   ")
     top_line     = ("  " + "┏━━━" * 8 + "┓")
-    lines =[["8 ┃ #{sym(:a8)} ┃ #{sym(:b8)} ┃ #{sym(:c8)} ┃ #{sym(:d8)} ┃ #{sym(:e8)} ┃ #{sym(:f8)} ┃ #{sym(:g8)} ┃ #{sym(:h8)} ┃ 8"],
-            ["7 ┃ #{sym(:a7)} ┃ #{sym(:b7)} ┃ #{sym(:c7)} ┃ #{sym(:d7)} ┃ #{sym(:e7)} ┃ #{sym(:f7)} ┃ #{sym(:g7)} ┃ #{sym(:h7)} ┃ 7"],
-            ["6 ┃ #{sym(:a6)} ┃ #{sym(:b6)} ┃ #{sym(:c6)} ┃ #{sym(:d6)} ┃ #{sym(:e6)} ┃ #{sym(:f6)} ┃ #{sym(:g6)} ┃ #{sym(:h6)} ┃ 6"],
-            ["5 ┃ #{sym(:a5)} ┃ #{sym(:b5)} ┃ #{sym(:c5)} ┃ #{sym(:d5)} ┃ #{sym(:e5)} ┃ #{sym(:f5)} ┃ #{sym(:g5)} ┃ #{sym(:h5)} ┃ 5"],
-            ["4 ┃ #{sym(:a4)} ┃ #{sym(:b4)} ┃ #{sym(:c4)} ┃ #{sym(:d4)} ┃ #{sym(:e4)} ┃ #{sym(:f4)} ┃ #{sym(:g4)} ┃ #{sym(:h4)} ┃ 4"],
-            ["3 ┃ #{sym(:a3)} ┃ #{sym(:b3)} ┃ #{sym(:c3)} ┃ #{sym(:d3)} ┃ #{sym(:e3)} ┃ #{sym(:f3)} ┃ #{sym(:g3)} ┃ #{sym(:h3)} ┃ 3"],
-            ["2 ┃ #{sym(:a2)} ┃ #{sym(:b2)} ┃ #{sym(:c2)} ┃ #{sym(:d2)} ┃ #{sym(:e2)} ┃ #{sym(:f2)} ┃ #{sym(:g2)} ┃ #{sym(:h2)} ┃ 2"],
-            ["1 ┃ #{sym(:a1)} ┃ #{sym(:b1)} ┃ #{sym(:c1)} ┃ #{sym(:d1)} ┃ #{sym(:e1)} ┃ #{sym(:f1)} ┃ #{sym(:g1)} ┃ #{sym(:h1)} ┃ 1"]]
+    basic_lines = (["┃." * 8 + "┃"] * 8 )
+    basic_lines = basic_lines.map.with_index do |line, ord|
+      "#{8 - ord} " + line + " #{8 - ord}"
+    end
+
+    basic_lines = basic_lines.map do |line|
+      line_no = line[0].to_i
+      for i in 0...4
+        coord1 = ((97 +    i * 2   ).chr + "#{line_no}").to_sym
+        coord2 = ((97 + (i * 2 + 1)).chr + "#{line_no}").to_sym
+        if line_no.even?
+          line = line.sub ".", "\e[107m #{sym(coord1)} \e[0m"
+          line = line.sub ".", "\e[40m #{sym(coord2)} \e[0m"
+        else
+          line = line.sub ".", "\e[40m #{sym(coord1)} \e[0m"
+          line = line.sub ".", "\e[107m #{sym(coord2)} \e[0m"
+        end
+      end
+      line
+    end
+
     middle_line  = ("  "+ "┣━━━" * 8 + "┫")
     bottom_line  = ("  " + "┗━━━" * 8 + "┛")
-    body = lines.join("\n" + middle_line + "\n")
+    body = basic_lines.join("\n" + middle_line + "\n")
 
     visualised_board = [horizontal_coordinates, top_line, body,
                         bottom_line, horizontal_coordinates].join("\n")
