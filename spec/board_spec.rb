@@ -11,10 +11,10 @@ describe Board do
     end
   end
 
-  # TODO: update
   describe "#sym" do
-    it "returns the symbol" do
-      expect(b.sym(:d2)).to eql("♟")
+    it "returns coloured symbol" do
+      expect(b.sym(:d2)).to eql("\e[97m♟")
+      expect(b.sym(:d7)).to eql("\e[30m♟")
     end
 
     it "returns 1 space string" do
