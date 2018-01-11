@@ -82,10 +82,19 @@ describe Board do
       end
     end
 
+    context "if the board between king and rook is not empty" do
+      it "returns false" do
+        b.board[:h1] = Rook.new(:white, true)
+        b.board[:e1] = King.new(:white, true)
+        b.board[:g1] = Bishop.new(:white)
+        expect(b.castling?(:e1, :h1)).to eql(false)
+      end
+    end
+
     it "returns true" do
-      b.board[:h1] = Rook.new(:white, true)
-      b.board[:e1] = King.new(:white, true)
-      expect(b.castling?(:e1, :g1)).to eql(true)
+      b.board[:h3] = Rook.new(:white, true)
+      b.board[:e3] = King.new(:white, true)
+      expect(b.castling?(:e3, :g3)).to eql(true)
     end
   end
 
