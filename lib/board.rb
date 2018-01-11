@@ -39,7 +39,12 @@ class Board
   end
 
   def sym(coord)
-    @board[coord].nil? ? " " : @board[coord].symbol
+    return " " if @board[coord].nil?
+    if @board[coord].colour == :white
+      "\e[97m#{@board[coord].symbol}"
+    else
+      "\e[30m#{@board[coord].symbol}"
+    end
   end
 
   def visualise
@@ -56,11 +61,11 @@ class Board
         coord1 = ((97 +    i * 2   ).chr + "#{line_no}").to_sym
         coord2 = ((97 + (i * 2 + 1)).chr + "#{line_no}").to_sym
         if line_no.even?
-          line = line.sub ".", "\e[107m #{sym(coord1)} \e[0m"
-          line = line.sub ".", "\e[40m #{sym(coord2)} \e[0m"
+          line = line.sub ".", "\e[104m #{sym(coord1)} \e[0m"
+          line = line.sub ".", "\e[103m #{sym(coord2)} \e[0m"
         else
-          line = line.sub ".", "\e[40m #{sym(coord1)} \e[0m"
-          line = line.sub ".", "\e[107m #{sym(coord2)} \e[0m"
+          line = line.sub ".", "\e[103m #{sym(coord1)} \e[0m"
+          line = line.sub ".", "\e[104m #{sym(coord2)} \e[0m"
         end
       end
       line

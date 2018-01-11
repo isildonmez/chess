@@ -3,8 +3,7 @@ class Pawn
 
   def initialize(colour)
     @colour = colour
-    @symbol = "♟" if @colour == :white
-    @symbol = "♙" if @colour == :black
+    @symbol = "♟"
     @turn_of_first_move = nil
   end
 
@@ -42,8 +41,7 @@ class Rook
 
   def initialize(colour, never_moved = true)
     @colour = colour
-    @symbol = "♜" if @colour == :white
-    @symbol = "♖" if @colour == :black
+    @symbol = "♜"
     @never_moved = never_moved
   end
 
@@ -60,8 +58,7 @@ class Bishop
 
   def initialize(colour)
     @colour = colour
-    @symbol = "♝" if @colour == :white
-    @symbol = "♗" if @colour == :black
+    @symbol = "♝"
   end
 
   def can_move?(cur_coord, new_coord)
@@ -76,8 +73,7 @@ class Knight
 
   def initialize(colour)
     @colour = colour
-    @symbol = "♞" if @colour == :white
-    @symbol = "♘" if @colour == :black
+    @symbol = "♞"
   end
 
   def can_move?(cur_coord, new_coord)
@@ -97,8 +93,7 @@ class Queen
 
   def initialize(colour)
     @colour = colour
-    @symbol = "♛" if @colour == :white
-    @symbol = "♕" if @colour == :black
+    @symbol = "♛"
   end
 
   def can_move?(cur_coord, new_coord)
@@ -115,8 +110,7 @@ class King
 
   def initialize(colour, never_moved = true)
     @colour = colour
-    @symbol = "♚" if @colour == :white
-    @symbol = "♔" if @colour == :black
+    @symbol = "♚"
     @never_moved = never_moved
   end
 
