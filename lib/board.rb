@@ -222,6 +222,8 @@ class Board
       end
       return true
     end
+
+    return false
   end
 
 end

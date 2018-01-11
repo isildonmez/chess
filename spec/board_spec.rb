@@ -178,6 +178,12 @@ describe Board do
       end
     end
 
+    context "Anything else" do
+      it "returns false" do
+        expect(b.empty_between?(:d3, :h6)).to eql(false)
+      end
+    end
+
   end
 
 
