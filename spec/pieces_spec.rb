@@ -12,7 +12,7 @@ describe Pawn do
 
     it "sets its symbol" do
       expect(w_pawn.symbol).to eq("♟")
-      expect(b_pawn.symbol).to eq("♙")
+      expect(b_pawn.symbol).to eq("♟")
     end
   end
 
@@ -73,7 +73,7 @@ describe Rook do
 
     it "sets its symbol" do
       expect(w_rook.symbol).to eq("♜")
-      expect(b_rook.symbol).to eq("♖")
+      expect(b_rook.symbol).to eq("♜")
     end
 
     it "sets its never_moved" do
@@ -107,7 +107,7 @@ describe Bishop do
 
     it "sets its symbol" do
       expect(w_bishop.symbol).to eq("♝")
-      expect(b_bishop.symbol).to eq("♗")
+      expect(b_bishop.symbol).to eq("♝")
     end
   end
 
@@ -136,7 +136,7 @@ describe Knight do
 
     it "sets its symbol" do
       expect(w_knight.symbol).to eq("♞")
-      expect(b_knight.symbol).to eq("♘")
+      expect(b_knight.symbol).to eq("♞")
     end
   end
 
@@ -171,7 +171,7 @@ describe Queen do
 
     it "sets its symbol" do
       expect(w_queen.symbol).to eq("♛")
-      expect(b_queen.symbol).to eq("♕")
+      expect(b_queen.symbol).to eq("♛")
     end
   end
 
@@ -201,7 +201,7 @@ describe King do
 
     it "sets its symbol" do
       expect(w_king.symbol).to eq("♚")
-      expect(b_king.symbol).to eq("♔")
+      expect(b_king.symbol).to eq("♚")
     end
 
     it "sets its never_moved" do

@@ -11,6 +11,7 @@ describe Board do
     end
   end
 
+  # TODO: update
   describe "#sym" do
     it "returns the symbol" do
       expect(b.sym(:d2)).to eql("♟")
