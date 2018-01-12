@@ -89,6 +89,7 @@ class Board
     @board
   end
 
+  # TODO: change updating the opponent pawn and its test
   def en_passant?(cur_coord, new_coord, game_turn)
     cur_piece = @board[cur_coord]
     return false unless cur_piece.can_attack?(cur_coord, new_coord)
@@ -112,6 +113,7 @@ class Board
     true
   end
 
+  # TODO: change updating castle's coord and its test
   def castling?(cur_coord, new_coord)
     cur_piece = @board[cur_coord]
     if (new_coord[0] == "c" || new_coord[0] == "g") && cur_piece.never_moved

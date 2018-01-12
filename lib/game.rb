@@ -27,6 +27,42 @@ class Game
     return true
   end
 
+  def free_way(cur_coord, new_coord)
+    cur_piece = @board.get(cur_coord)
+    if !(cur_piece.is_a? Knight)
+      return false unless @board.empty_between?(cur_coord, new_coord)
+    end
+    true
+  end
+
+  # TODO: king cannot make castling if checked and its test.
+  def valid_move_of_the_piece(cur_coord, new_coord, turn)
+    cur_piece = @board.get(cur_coord)
+    if @board.get(new_coord).nil?
+      if cur_piece.is_a? Pawn
+        return false unless (@board.en_passant?(cur_coord, new_coord, turn)) ||
+                            cur_piece.can_move?(cur_coord, new_coord)
+      elsif cur_piece.is_a? King
+        return false unless (@board.castling?(cur_coord, new_coord) ||
+                            cur_piece.can_move?(cur_coord, new_coord))
+      else
+        return false unless cur_piece.can_move?(cur_coord, new_coord)
+      end
+    else
+      return false if cur_piece.colour == @board.get(new_coord).colour
+      if cur_piece.is_a? Pawn
+        return false unless cur_piece.can_attack?(cur_coord, new_coord)
+      else
+        return false unless cur_piece.can_move?(cur_coord, new_coord)
+      end
+    end
+    true
+  end
+
+  def legal_move(cur_coord, new_coord, turn)
+    free_way(cur_coord, new_coord) & valid_move_of_the_piece(cur_coord, new_coord, turn)
+  end
+
   # TODO
   def a_winner?(player)
     return game_over = false
@@ -56,36 +92,18 @@ if __FILE__ == $0
         puts "It has to be empty and the piece has to be from your pieces. Please enter a valid coordinate.(e.g. a4, d5)"
         cur_coord = gets.chomp.to_sym
       end
-      puts "#{player.capitalize} player, please enter a new coordinate. (e.g. b6)"
+      puts "#{player.capitalize} player, please enter a new coordinate in order to make a legal move. (e.g. b6)"
       new_coord = gets.chomp.to_sym
       until chess.valid_coord?(new_coord)
         puts "It has to be valid. Please enter another coordinate.(e.g. a4, d5)"
         new_coord = gets.chomp.to_sym
       end
 
-      cur_piece = chess.board.get(cur_coord)
-      if !(cur_piece.is_a? Knight)
-        next unless chess.board.empty_between?(cur_coord, new_coord)
-      end
+      next unless chess.legal_move(cur_coord, new_coord, turn)
 
-      if chess.board.get(new_coord).nil?
-        if cur_piece.is_a? Pawn
-          next unless (chess.board.en_passant?(cur_coord, new_coord, turn)) ||
-                      cur_piece.can_move?(cur_coord, new_coord)
-        elsif cur_piece.is_a? King
-          next unless (chess.board.castling?(cur_coord, new_coord) ||
-                      cur_piece.can_move?(cur_coord, new_coord))
-        else
-          next unless cur_piece.can_move?(cur_coord, new_coord)
-        end
-      else
-        next if cur_piece.colour == chess.board.get(new_coord).colour
-        if cur_piece.is_a? Pawn
-          next unless cur_piece.can_attack?(cur_coord, new_coord)
-        else
-          next unless cur_piece.can_move?(cur_coord, new_coord)
-        end
-      end
+      # Does it check opponent's king?
+      # Is its King checked by opponent?
+      # if neither of the above, can team play any other piece?
 
 
       accepted_move = true
