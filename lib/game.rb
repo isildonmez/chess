@@ -27,6 +27,10 @@ class Game
     return true
   end
 
+  def right_coloured_piece(player, coord)
+    return player == @board.get(coord).colour ? true : false
+  end
+
   def free_way(cur_coord, new_coord)
     cur_piece = @board.get(cur_coord)
     if !(cur_piece.is_a? Knight)
@@ -66,10 +70,6 @@ class Game
   # TODO
   def a_winner?(player)
     return game_over = false
-  end
-
-  def right_coloured_piece(player, coord)
-    return player == @board.get(coord).colour ? true : false
   end
 
 end

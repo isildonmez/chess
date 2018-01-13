@@ -83,6 +83,7 @@ class Board
     return @board[coord].nil? ? false : true
   end
 
+  # TODO: if it is a king change the coord attribute
   def update(cur_coord, new_coord)
     @board[new_coord] = @board[cur_coord]
     @board[cur_coord] = nil
@@ -229,6 +230,7 @@ class Board
 
     return false
   end
+
 
 end
 

@@ -208,6 +208,11 @@ describe King do
       expect(w_king.never_moved).to eq(true)
       expect(b_king.never_moved).to eq(false)
     end
+
+    it "sets its initial coord" do
+      expect(w_king.coord).to eq(:e1)
+      expect(b_king.coord).to eq(:e8)
+    end
   end
 
   describe "#can_move?" do
