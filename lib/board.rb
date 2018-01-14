@@ -1,7 +1,7 @@
 require_relative './pieces'
 
 class Board
-  attr_accessor :board, :white_king, :black_king
+  attr_accessor :board, :white_pieces, :black_pieces
 
   def initialize()
     @board = {}
@@ -33,8 +33,14 @@ class Board
     @board[:e1] = King.new(:white)
     @board[:e8] = King.new(:black)
 
-    @white_king = @board[:e1]
-    @black_king = @board[:e8]
+    @white_pieces = {}
+    @black_pieces = {}
+    @board.each do |coord, obj|
+      next if obj == nil
+      @white_pieces[obj] = coord if obj.colour == :white
+      @black_pieces[obj] = coord if obj.colour == :black
+    end
+
   end
 
   def get(coord)
@@ -247,4 +253,6 @@ class Board
 
 end
 
+b = Board.new
+p b.white_pieces
 

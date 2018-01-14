@@ -106,7 +106,7 @@ class Queen
 end
 
 class King
-  attr_accessor :colour, :symbol, :never_moved, :coord, :is_checked
+  attr_accessor :colour, :symbol, :never_moved, :is_checked
 
   def initialize(colour, never_moved = true)
     @colour = colour
