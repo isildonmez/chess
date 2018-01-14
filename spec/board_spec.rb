@@ -42,13 +42,13 @@ describe Board do
     end
   end
 
-  describe "#get_the_coord_of_the_king" do
+  describe "#get_the_king" do
     it "returns the coordinate of the king" do
-      expect(b.get_the_coord_of_the_king(:white)).to eql(:e1)
-      expect(b.get_the_coord_of_the_king(:black)).to eql(:e8)
+      expect(b.get_the_king(:white).coord).to eql(:e1)
+      expect(b.get_the_king(:black).coord).to eql(:e8)
 
       b.update(:e8, :g6)
-      expect(b.get_the_coord_of_the_king(:black)).to eql(:g6)
+      expect(b.get_the_king(:black).coord).to eql(:g6)
     end
   end
 

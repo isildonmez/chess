@@ -64,7 +64,7 @@ class Game
   end
 
   def legal_move(cur_coord, new_coord, turn)
-    free_way(cur_coord, new_coord) & valid_move_of_the_piece(cur_coord, new_coord, turn)
+    free_way(cur_coord, new_coord) && valid_move_of_the_piece(cur_coord, new_coord, turn)
   end
 
   # TODO

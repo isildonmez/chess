@@ -86,9 +86,9 @@ class Board
     return @board[coord].nil? ? false : true
   end
 
-  def get_the_coord_of_the_king(colour)
-    return @white_king.coord if colour == :white
-    return @black_king.coord if colour == :black
+  def get_the_king(colour)
+    return @white_king if colour == :white
+    return @black_king if colour == :black
   end
 
   def update(cur_coord, new_coord)
