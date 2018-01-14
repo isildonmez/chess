@@ -30,6 +30,26 @@ describe Board do
       expect(b.board[:a2]).to eql(nil)
       expect(b.board[:a4]).to eql(a_pawn)
     end
+
+    context "when it is a King" do
+      it "returns updated board" do
+        b.board[:e7] == nil
+        b.update(:e8, :e7)
+        expect(b.board[:e8]).to eql(nil)
+        expect(b.board[:e7]).to eql(b.black_king)
+        expect(b.black_king.coord).to eql(:e7)
+      end
+    end
+  end
+
+  describe "#get_the_coord_of_the_king" do
+    it "returns the coordinate of the king" do
+      expect(b.get_the_coord_of_the_king(:white)).to eql(:e1)
+      expect(b.get_the_coord_of_the_king(:black)).to eql(:e8)
+
+      b.update(:e8, :g6)
+      expect(b.get_the_coord_of_the_king(:black)).to eql(:g6)
+    end
   end
 
   describe "#en_passant?" do

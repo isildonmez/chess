@@ -1,7 +1,7 @@
 require_relative './pieces'
 
 class Board
-  attr_accessor :board
+  attr_accessor :board, :white_king, :black_king
 
   def initialize()
     @board = {}
@@ -32,6 +32,9 @@ class Board
 
     @board[:e1] = King.new(:white)
     @board[:e8] = King.new(:black)
+
+    @white_king = @board[:e1]
+    @black_king = @board[:e8]
   end
 
   def get(coord)
@@ -83,8 +86,16 @@ class Board
     return @board[coord].nil? ? false : true
   end
 
-  # TODO: if it is a king change the coord attribute
+  def get_the_coord_of_the_king(colour)
+    return @white_king.coord if colour == :white
+    return @black_king.coord if colour == :black
+  end
+
   def update(cur_coord, new_coord)
+    cur_piece = @board[cur_coord]
+    if (cur_piece.is_a? King)
+      cur_piece.coord = new_coord
+    end
     @board[new_coord] = @board[cur_coord]
     @board[cur_coord] = nil
     @board
