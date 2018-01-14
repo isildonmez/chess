@@ -106,7 +106,7 @@ class Queen
 end
 
 class King
-  attr_accessor :colour, :symbol, :never_moved, :coord
+  attr_accessor :colour, :symbol, :never_moved, :coord, :is_checked
 
   def initialize(colour, never_moved = true)
     @colour = colour
@@ -114,6 +114,7 @@ class King
     @never_moved = never_moved
     @coord = :e1 if @colour == :white
     @coord = :e8 if @colour == :black
+    @is_checked = false
   end
 
   def can_move?(cur_coord, new_coord)
