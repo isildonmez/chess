@@ -101,8 +101,8 @@ if __FILE__ == $0
 
       next unless chess.legal_move(cur_coord, new_coord, turn)
 
-      # Does it check opponent's king?
       # Is its King checked by opponent?
+      # Does it check opponent's king?
       # if neither of the above, can team play any other piece?
 
 

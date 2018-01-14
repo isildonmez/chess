@@ -86,11 +86,13 @@ class Board
     return @board[coord].nil? ? false : true
   end
 
+  # TODO: update acc to each team's pieces and its test
   def get_the_king(colour)
     return @white_king if colour == :white
     return @black_king if colour == :black
   end
 
+  # TODO: update acc to each team's pieces and its test
   def update(cur_coord, new_coord)
     cur_piece = @board[cur_coord]
     if (cur_piece.is_a? King)

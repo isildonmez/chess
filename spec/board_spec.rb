@@ -4,6 +4,7 @@ require_relative '../lib/pieces'
 describe Board do
   subject(:b) { Board.new }
 
+  # TODO: change white/black king with team attr
   describe "#initialize" do
     it "sets the board hash" do
       expect(b.board[:a7].nil?).to eql(false)

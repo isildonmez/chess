@@ -209,11 +209,6 @@ describe King do
       expect(b_king.never_moved).to eq(false)
     end
 
-    it "sets its initial coord" do
-      expect(w_king.coord).to eq(:e1)
-      expect(b_king.coord).to eq(:e8)
-    end
-
     it "sets its is_checked attr as false" do
       expect(w_king.is_checked).to eq(false)
       expect(b_king.is_checked).to eq(false)

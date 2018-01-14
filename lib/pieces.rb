@@ -112,8 +112,6 @@ class King
     @colour = colour
     @symbol = "♚"
     @never_moved = never_moved
-    @coord = :e1 if @colour == :white
-    @coord = :e8 if @colour == :black
     @is_checked = false
   end
 
