@@ -35,12 +35,15 @@ class Board
 
     @white_pieces = {}
     @black_pieces = {}
+    create_teams
+  end
+
+  def create_teams
     @board.each do |coord, obj|
       next if obj == nil
       @white_pieces[obj] = coord if obj.colour == :white
       @black_pieces[obj] = coord if obj.colour == :black
     end
-
   end
 
   def get(coord)
@@ -102,11 +105,8 @@ class Board
   end
 
   # TODO: update acc to each team's pieces and its test
+  # todo: pawn promotion,castling?, en_passant?
   def update(cur_coord, new_coord)
-    cur_piece = @board[cur_coord]
-    if (cur_piece.is_a? King)
-      cur_piece.coord = new_coord
-    end
     @board[new_coord] = @board[cur_coord]
     @board[cur_coord] = nil
     @board

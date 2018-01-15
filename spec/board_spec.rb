@@ -9,7 +9,9 @@ describe Board do
       expect(b.board[:a7].nil?).to eql(false)
       expect(b.board[:a3].nil?).to eql(true)
     end
+  end
 
+  describe "#create_teams" do
     it "sets white_pieces and black_pieces hash" do
       expect(b.white_pieces.keys.all?{|obj| obj.colour == :white}).to eql(true)
       expect(b.black_pieces.length).to eql(16)
