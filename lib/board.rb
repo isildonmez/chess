@@ -92,10 +92,13 @@ class Board
     return @board[coord].nil? ? false : true
   end
 
-  # TODO: update acc to each team's pieces and its test
-  def get_the_king(colour)
-    return @white_king if colour == :white
-    return @black_king if colour == :black
+  def get_pieces(colour, which_piece)
+    which_piece = which_piece.to_s.capitalize
+    if colour == :white
+      return white_pieces.select{|obj, coord| obj.class.name == which_piece}
+    else
+      return black_pieces.select{|obj, coord| obj.class.name == which_piece}
+    end
   end
 
   # TODO: update acc to each team's pieces and its test
@@ -161,12 +164,12 @@ class Board
     false
   end
 
-  def pawn_promotion(new_coord, new_piece = which_piece)
+  def pawn_promotion(new_coord, new_piece = pawn_to_be)
     cur_pawn = @board[new_coord]
     @board[new_coord] = Object.const_get(new_piece).new(cur_pawn.colour)
   end
 
-  def which_piece
+  def pawn_to_be
     puts "Please which piece of the following do you want your pawn to transform  into?"
     puts "Enter 1 for Queen, enter 2 for Knight, enter 3 for Rook, enter 4 for Bishop"
     order = gets.chomp
@@ -252,7 +255,4 @@ class Board
 
 
 end
-
-b = Board.new
-p b.white_pieces
 

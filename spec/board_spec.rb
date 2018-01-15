@@ -4,7 +4,6 @@ require_relative '../lib/pieces'
 describe Board do
   subject(:b) { Board.new }
 
-  # TODO: change white/black king with team attr
   describe "#initialize" do
     it "sets the board hash" do
       expect(b.board[:a7].nil?).to eql(false)
@@ -48,15 +47,13 @@ describe Board do
     # end
   end
 
-  # describe "#get_the_king" do
-  #   it "returns the coordinate of the king" do
-  #     expect(b.get_the_king(:white).coord).to eql(:e1)
-  #     expect(b.get_the_king(:black).coord).to eql(:e8)
-
-  #     b.update(:e8, :g6)
-  #     expect(b.get_the_king(:black).coord).to eql(:g6)
-  #   end
-  # end
+  describe "#get_pieces" do
+    it "returns a hash of requested pieces" do
+      expect(b.get_pieces(:white, "pawn").keys.all?{|obj| obj.class.name == "Pawn"}).to eql(true)
+      expect(b.get_pieces(:black, "pawn").length).to eql(8)
+      expect(b.get_pieces(:black, "KING").values).to eql([:e8])
+    end
+  end
 
   describe "#en_passant?" do
     it "returns true" do
