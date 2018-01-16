@@ -142,6 +142,15 @@ describe Board do
       end
     end
 
+    context "if king is checked" do
+      it "returns false" do
+        b.board[:h3] = Rook.new(:white, true)
+        b.board[:e3] = King.new(:white, true)
+        b.board[:e3].is_checked = true
+        expect(b.castling?(:e3, :g3)).to eql(false)
+      end
+    end
+
     it "returns true" do
       b.board[:h3] = Rook.new(:white, true)
       b.board[:e3] = King.new(:white, true)

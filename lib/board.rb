@@ -157,16 +157,17 @@ class Board
     opp_coord
   end
 
-  # TODO: change updating castle's coord and its test
   def castling?(cur_coord, new_coord)
-    cur_piece = @board[cur_coord]
-    if (new_coord[0] == "c" || new_coord[0] == "g") && cur_piece.never_moved
+    cur_king = @board[cur_coord]
+    return false if cur_king.is_checked == true
+
+    if (new_coord[0] == "c" || new_coord[0] == "g") && cur_king.never_moved
       return false unless cur_coord[1] == new_coord[1]
       if new_coord[0] == "c"
         return false unless @board[("a" + new_coord[1]).to_sym].is_a? Rook
         cur_rook = @board[("a" + new_coord[1]).to_sym]
         return false unless cur_rook.never_moved
-        return false if cur_rook.colour != cur_piece.colour
+        return false if cur_rook.colour != cur_king.colour
         return false unless empty_between?(cur_coord, ("a" + new_coord[1]).to_sym)
         @board[("d" + new_coord[1]).to_sym] = cur_rook
         @board[("a" + new_coord[1]).to_sym] = nil
@@ -174,7 +175,7 @@ class Board
         return false unless @board[("h" + new_coord[1]).to_sym].is_a? Rook
         cur_rook = @board[("h" + new_coord[1]).to_sym]
         return false unless cur_rook.never_moved
-        return false if cur_rook.colour != cur_piece.colour
+        return false if cur_rook.colour != cur_king.colour
         return false unless empty_between?(cur_coord, ("h" + new_coord[1]).to_sym)
         @board[("f" + new_coord[1]).to_sym] = cur_rook
         @board[("h" + new_coord[1]).to_sym] = nil
