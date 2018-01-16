@@ -30,10 +30,10 @@ describe Board do
   end
 
   describe "#update" do
-    it "returns updated board" do
+    it "updates board" do
       expect(b.board[:a4]).to eql(nil)
       a_pawn = b.board[:a2]
-      b.update(:a2, :a4)
+      b.update(:a2, :a4, 3)
       expect(b.board[:a2]).to eql(nil)
       expect(b.board[:a4]).to eql(a_pawn)
     end
@@ -42,10 +42,22 @@ describe Board do
       expect(b.white_pieces.key(:h1).is_a? Rook).to eql(true)
       expect(b.black_pieces.key(:h8).is_a? Rook).to eql(true)
       expect(b.black_pieces.has_value?(:h1)).to eql(false)
-      b.update(:h8, :h1)
+      b.update(:h8, :h1, 42)
       expect(b.white_pieces.has_value?(:h1)).to eql(false)
       expect(b.black_pieces.key(:h1).is_a? Rook).to eql(true)
     end
+
+    context "if en_passant?" do
+      it "changes board and pieces hash" do
+        b.board[:b4] = Pawn.new(:black)
+        b.board[:c4] = Pawn.new(:white)
+        b.board[:c4].turn_of_first_move = 10
+        b.update(:b4, :c3, 11)
+        expect(b.board[:c4]).to eql(nil)
+        expect(b.white_pieces.has_value?(:c4)).to eql(false)
+      end
+    end
+
   end
 
   describe "#get_pieces" do
@@ -61,7 +73,6 @@ describe Board do
       b.board[:b4] = Pawn.new(:black)
       b.board[:c4] = Pawn.new(:white)
       b.board[:c4].turn_of_first_move = 10
-      puts b.visualise
       expect(b.en_passant?(:b4, :c3, 11)).to eql(true)
     end
 

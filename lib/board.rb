@@ -104,9 +104,18 @@ class Board
     end
   end
 
-  # TODO: pawn promotion,castling?, en_passant?
-  def update(cur_coord, new_coord)
+  # TODO: pawn promotion,castling?
+  def update(cur_coord, new_coord, game_turn)
     cur_piece = @board[cur_coord]
+
+    if (cur_piece.is_a? Pawn) && (en_passant?(cur_coord, new_coord, game_turn))
+      opp_coord = opponent_coord(cur_coord, new_coord)
+      opponent = @board[opp_coord]
+      @white_pieces.delete(opponent) if opponent.colour == :white
+      @black_pieces.delete(opponent) if opponent.colour == :black
+      @board[opp_coord] = nil
+    end
+
     other_piece = @board[new_coord]
     unless other_piece.nil?
       @white_pieces.delete(other_piece) if other_piece.colour == :white
@@ -120,7 +129,6 @@ class Board
     @board
   end
 
-  # TODO: change updating the opponent pawn and its test
   def en_passant?(cur_coord, new_coord, game_turn)
     cur_piece = @board[cur_coord]
     return false unless cur_piece.can_attack?(cur_coord, new_coord)
@@ -137,7 +145,6 @@ class Board
     return false unless (cur_piece.colour == :black && @board[opp_coord].colour == :white) ||
                         (cur_piece.colour == :white && @board[opp_coord].colour == :black)
     return false unless @board[opp_coord].turn_of_first_move == game_turn - 1
-    # @board[opponent_coord] = nil
     true
   end
 
