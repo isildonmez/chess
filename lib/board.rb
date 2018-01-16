@@ -104,9 +104,17 @@ class Board
     end
   end
 
-  # TODO: update acc to each team's pieces and its test
-  # todo: pawn promotion,castling?, en_passant?
+  # TODO: pawn promotion,castling?, en_passant?
   def update(cur_coord, new_coord)
+    cur_piece = @board[cur_coord]
+    other_piece = @board[new_coord]
+    unless other_piece.nil?
+      @white_pieces.delete(other_piece) if other_piece.colour == :white
+      @black_pieces.delete(other_piece) if other_piece.colour == :black
+    end
+    @white_pieces[cur_piece] = new_coord if cur_piece.colour == :white
+    @black_pieces[cur_piece] = new_coord if cur_piece.colour == :black
+
     @board[new_coord] = @board[cur_coord]
     @board[cur_coord] = nil
     @board
@@ -255,4 +263,10 @@ class Board
 
 
 end
+
+b = Board.new
+b.update(:h8, :h1)
+puts "YYYYYYYYYYYYYYYYYYYYYYYEEEEFFFFF"
+p b.black_pieces
+
 

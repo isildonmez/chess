@@ -38,15 +38,14 @@ describe Board do
       expect(b.board[:a4]).to eql(a_pawn)
     end
 
-    # context "when it is a King" do
-    #   it "returns updated board" do
-    #     b.board[:e7] == nil
-    #     b.update(:e8, :e7)
-    #     expect(b.board[:e8]).to eql(nil)
-    #     expect(b.board[:e7]).to eql(b.black_king)
-    #     expect(b.black_king.coord).to eql(:e7)
-    #   end
-    # end
+    it "changes teams hash" do
+      expect(b.white_pieces.key(:h1).is_a? Rook).to eql(true)
+      expect(b.black_pieces.key(:h8).is_a? Rook).to eql(true)
+      expect(b.black_pieces.has_value?(:h1)).to eql(false)
+      b.update(:h8, :h1)
+      expect(b.white_pieces.has_value?(:h1)).to eql(false)
+      expect(b.black_pieces.key(:h1).is_a? Rook).to eql(true)
+    end
   end
 
   describe "#get_pieces" do
