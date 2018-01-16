@@ -73,6 +73,22 @@ describe Board do
     end
   end
 
+  describe "#opponent_coord" do
+    context "if black pawn" do
+      it "returns opp_coord" do
+        b.board[:b4] = Pawn.new(:black)
+        expect(b.opponent_coord(:b4, :c3)).to eql(:c4)
+      end
+    end
+
+    context "if white pawn" do
+      it "returns opp_coord" do
+        b.board[:h5] = Pawn.new(:white)
+        expect(b.opponent_coord(:h5, :g6)).to eql(:g5)
+      end
+    end
+  end
+
   describe "#castling?" do
     context "with a rook moved before" do
       it "returns false" do

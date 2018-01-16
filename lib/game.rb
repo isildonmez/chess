@@ -80,10 +80,10 @@ if __FILE__ == $0
   puts chess.board.visualise
   game_over = false
   turn = 1
-  accepted_move = false
 
   until game_over
     player = turn.odd? ? :white : :black
+    accepted_move = false
 
     until accepted_move
       puts "#{player.capitalize} player, please enter the coordinate of a piece you want to move. (e.g. a4)"

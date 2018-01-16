@@ -126,22 +126,28 @@ class Board
     return false unless cur_piece.can_attack?(cur_coord, new_coord)
 
     if @board[cur_coord].colour == :black
-
       return false if cur_coord[1].to_i != 4
-      opponent_coord = (new_coord[0] + (new_coord[1].to_i + 1).to_s).to_sym
     else
-
       return false if cur_coord[1].to_i != 5
-      opponent_coord = (new_coord[0] + (new_coord[1].to_i - 1).to_s).to_sym
     end
-    return false if @board[opponent_coord].nil?
-    return false unless @board[opponent_coord].is_a? Pawn
-    return false unless (cur_piece.colour == :black && @board[opponent_coord].colour == :white) ||
-                        (cur_piece.colour == :white && @board[opponent_coord].colour == :black)
-    return false unless @board[opponent_coord].turn_of_first_move == game_turn - 1
 
-    @board[opponent_coord] = nil
+    opp_coord = opponent_coord(cur_coord, new_coord)
+    return false if @board[opp_coord].nil?
+    return false unless @board[opp_coord].is_a? Pawn
+    return false unless (cur_piece.colour == :black && @board[opp_coord].colour == :white) ||
+                        (cur_piece.colour == :white && @board[opp_coord].colour == :black)
+    return false unless @board[opp_coord].turn_of_first_move == game_turn - 1
+    # @board[opponent_coord] = nil
     true
+  end
+
+  def opponent_coord(cur_coord, new_coord)
+    if @board[cur_coord].colour == :black
+      opp_coord = (new_coord[0] + (new_coord[1].to_i + 1).to_s).to_sym
+    else
+      opp_coord = (new_coord[0] + (new_coord[1].to_i - 1).to_s).to_sym
+    end
+    opp_coord
   end
 
   # TODO: change updating castle's coord and its test
@@ -263,10 +269,5 @@ class Board
 
 
 end
-
-b = Board.new
-b.update(:h8, :h1)
-puts "YYYYYYYYYYYYYYYYYYYYYYYEEEEFFFFF"
-p b.black_pieces
 
 
