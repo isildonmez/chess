@@ -57,7 +57,6 @@ describe Board do
         expect(b.white_pieces.has_value?(:c4)).to eql(false)
       end
     end
-
   end
 
   describe "#get_pieces" do

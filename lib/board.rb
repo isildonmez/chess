@@ -108,12 +108,18 @@ class Board
   def update(cur_coord, new_coord, game_turn)
     cur_piece = @board[cur_coord]
 
+    # en_passant
     if (cur_piece.is_a? Pawn) && (en_passant?(cur_coord, new_coord, game_turn))
       opp_coord = opponent_coord(cur_coord, new_coord)
       opponent = @board[opp_coord]
       @white_pieces.delete(opponent) if opponent.colour == :white
       @black_pieces.delete(opponent) if opponent.colour == :black
       @board[opp_coord] = nil
+    end
+
+    # pawn_promotion
+    if (cur_piece.is_a? Pawn) && (new_coord[1] == "1" || new_coord[1] == "8")
+      return pawn_promotion(new_coord)
     end
 
     other_piece = @board[new_coord]
