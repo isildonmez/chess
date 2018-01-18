@@ -159,11 +159,11 @@ describe Board do
     end
   end
 
-  describe "#rook_after_castling" do
+  describe "#update_rook_after_castling" do
     context "left side" do
       it "returns rook's new coord" do
         b.board[:a8] = Rook.new(:black)
-        expect(b.rook_after_castling(:c8)).to eql(:d8)
+        expect(b.update_rook_after_castling(:c8)).to eql(:d8)
         expect(b.board[:d8].is_a? Rook).to eql(true)
         expect(b.board[:a8].nil?).to eql(true)
         expect(b.board[:d8].never_moved).to eql(false)
@@ -173,7 +173,7 @@ describe Board do
     context "right side" do
       it "returns rook's new coord" do
         b.board[:h1] = Rook.new(:white)
-        expect(b.rook_after_castling(:g1)).to eql(:f1)
+        expect(b.update_rook_after_castling(:g1)).to eql(:f1)
         expect(b.board[:f1].is_a? Rook).to eql(true)
         expect(b.board[:h1].nil?).to eql(true)
         expect(b.board[:f1].never_moved).to eql(false)

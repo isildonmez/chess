@@ -104,7 +104,6 @@ class Board
     end
   end
 
-  # TODO: pawn promotion,castling?
   def update(cur_coord, new_coord, game_turn)
     cur_piece = @board[cur_coord]
 
@@ -122,8 +121,13 @@ class Board
       return pawn_promotion(new_coord)
     end
 
+    # castling
+    if (cur_piece.is_a? King) && castling?(cur_coord, new_coord)
+      update_rook_after_castling(new_coord)
+    end
+
     other_piece = @board[new_coord]
-    unless other_piece.nil?
+    if other_piece
       @white_pieces.delete(other_piece) if other_piece.colour == :white
       @black_pieces.delete(other_piece) if other_piece.colour == :black
     end
@@ -187,7 +191,7 @@ class Board
     false
   end
 
-  def rook_after_castling(new_coord)
+  def update_rook_after_castling(new_coord)
     if new_coord[0] == "c"
       rook_cur_coord = ("a" + new_coord[1]).to_sym
       cur_rook = @board[rook_cur_coord]
@@ -228,11 +232,11 @@ class Board
       return true if (new_coord[0].ord - cur_coord[0].ord).abs == 1
       if new_coord[0].ord > cur_coord[0].ord
         for i in (cur_coord[0].ord + 1)...(new_coord[0].ord)
-          return false unless @board[(i.chr + num).to_sym].nil?
+          return false if @board[(i.chr + num).to_sym]
         end
       else
         for i in (new_coord[0].ord + 1)...(cur_coord[0].ord)
-          return false unless @board[(i.chr + num).to_sym].nil?
+          return false if @board[(i.chr + num).to_sym]
         end
       end
       return true
@@ -244,11 +248,11 @@ class Board
       return true if (new_coord[1].to_i - cur_coord[1].to_i).abs == 1
       if new_coord[1].to_i > cur_coord[1].to_i
         for i in (cur_coord[1].to_i + 1)...(new_coord[1].to_i)
-          return false unless @board[(letter + i.to_s).to_sym].nil?
+          return false if @board[(letter + i.to_s).to_sym]
         end
       else
         for i in (new_coord[1].to_i + 1)...(cur_coord[1].to_i)
-          return false unless @board[(letter + i.to_s).to_sym].nil?
+          return false if @board[(letter + i.to_s).to_sym]
         end
       end
       return true
@@ -265,11 +269,11 @@ class Board
     if (cur_letter_ord - new_letter_ord) == (cur_num - new_num)
       if difference > 0
         for i in 1...difference
-          return false unless @board[((cur_letter_ord + i).chr + (cur_num + i).to_s).to_sym].nil?
+          return false if @board[((cur_letter_ord + i).chr + (cur_num + i).to_s).to_sym]
         end
       else
         for i in 1...(difference.abs)
-          return false unless @board[((cur_letter_ord - i).chr + (cur_num - i).to_s).to_sym].nil?
+          return false if @board[((cur_letter_ord - i).chr + (cur_num - i).to_s).to_sym]
         end
       end
       return true
@@ -279,11 +283,11 @@ class Board
     if (cur_letter_ord - new_letter_ord).abs == (cur_num - new_num).abs
       if difference > 0
         for i in 1...difference
-          return false unless @board[((cur_letter_ord - i).chr + (cur_num + i).to_s).to_sym].nil?
+          return false if @board[((cur_letter_ord - i).chr + (cur_num + i).to_s).to_sym]
         end
       else
         for i in 1...(difference.abs)
-          return false unless @board[((cur_letter_ord + i).chr + (cur_num - i).to_s).to_sym].nil?
+          return false if @board[((cur_letter_ord + i).chr + (cur_num - i).to_s).to_sym]
         end
       end
       return true
