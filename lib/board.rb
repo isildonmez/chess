@@ -112,6 +112,11 @@ class Board
     end
   end
 
+  def update_board(cur_coord, new_coord)
+    @board[new_coord] = @board[cur_coord]
+    @board[cur_coord] = nil
+  end
+
   def update(cur_coord, new_coord, game_turn)
     cur_piece = @board[cur_coord]
 
@@ -141,9 +146,8 @@ class Board
     end
 
     update_teams(cur_piece, new_coord)
+    update_board(cur_coord, new_coord)
 
-    @board[new_coord] = @board[cur_coord]
-    @board[cur_coord] = nil
     @board
   end
 
@@ -202,17 +206,14 @@ class Board
   def update_rook_after_castling(new_coord)
     if new_coord[0] == "c"
       rook_cur_coord = ("a" + new_coord[1]).to_sym
-      cur_rook = @board[rook_cur_coord]
       rook_new_coord = ("d" + new_coord[1]).to_sym
     elsif new_coord[0] == "g"
       rook_cur_coord = ("h" + new_coord[1]).to_sym
-      cur_rook = @board[rook_cur_coord]
       rook_new_coord = ("f" + new_coord[1]).to_sym
     end
+    cur_rook = @board[rook_cur_coord]
     update_teams(cur_rook, rook_new_coord)
-
-    @board[rook_new_coord] = cur_rook
-    @board[rook_cur_coord] = nil
+    update_board(rook_cur_coord, rook_new_coord)
     cur_rook.never_moved = false
 
     rook_new_coord
