@@ -165,31 +165,42 @@ class Board
 
   def castling?(cur_coord, new_coord)
     cur_king = @board[cur_coord]
+    cur_rook = nil
+    rook_coord = nil
     return false if cur_king.is_checked == true
+    return false unless cur_coord[1] == new_coord[1]
 
     if (new_coord[0] == "c" || new_coord[0] == "g") && cur_king.never_moved
-      return false unless cur_coord[1] == new_coord[1]
       if new_coord[0] == "c"
-        return false unless @board[("a" + new_coord[1]).to_sym].is_a? Rook
-        cur_rook = @board[("a" + new_coord[1]).to_sym]
-        return false unless cur_rook.never_moved
-        return false if cur_rook.colour != cur_king.colour
-        return false unless empty_between?(cur_coord, ("a" + new_coord[1]).to_sym)
-        @board[("d" + new_coord[1]).to_sym] = cur_rook
-        @board[("a" + new_coord[1]).to_sym] = nil
+        rook_coord = ("a" + new_coord[1]).to_sym
+        cur_rook = @board[rook_coord]
       elsif new_coord[0] == "g"
-        return false unless @board[("h" + new_coord[1]).to_sym].is_a? Rook
-        cur_rook = @board[("h" + new_coord[1]).to_sym]
-        return false unless cur_rook.never_moved
-        return false if cur_rook.colour != cur_king.colour
-        return false unless empty_between?(cur_coord, ("h" + new_coord[1]).to_sym)
-        @board[("f" + new_coord[1]).to_sym] = cur_rook
-        @board[("h" + new_coord[1]).to_sym] = nil
+        rook_coord = ("h" + new_coord[1]).to_sym
+        cur_rook = @board[rook_coord]
       end
-      cur_rook.never_moved = false
+      return false unless cur_rook.is_a? Rook
+      return false unless cur_rook.never_moved
+      return false if cur_rook.colour != cur_king.colour
+      return false unless empty_between?(cur_coord, rook_coord)
       return true
     end
     false
+  end
+
+  def rook_after_castling(new_coord)
+    if new_coord[0] == "c"
+      rook_cur_coord = ("a" + new_coord[1]).to_sym
+      cur_rook = @board[rook_cur_coord]
+      rook_new_coord = ("d" + new_coord[1]).to_sym
+    elsif new_coord[0] == "g"
+      rook_cur_coord = ("h" + new_coord[1]).to_sym
+      cur_rook = @board[rook_cur_coord]
+      rook_new_coord = ("f" + new_coord[1]).to_sym
+    end
+    @board[rook_new_coord] = cur_rook
+    @board[rook_cur_coord] = nil
+    cur_rook.never_moved = false
+    rook_new_coord
   end
 
   def pawn_promotion(new_coord, new_piece = pawn_to_be)

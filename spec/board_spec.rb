@@ -151,9 +151,33 @@ describe Board do
     end
 
     it "returns true" do
-      b.board[:h3] = Rook.new(:white, true)
-      b.board[:e3] = King.new(:white, true)
-      expect(b.castling?(:e3, :g3)).to eql(true)
+      b.board[:h1] = Rook.new(:white, true)
+      b.board[:e1] = King.new(:white, true)
+      b.board[:f1] = nil
+      b.board[:g1] = nil
+      expect(b.castling?(:e1, :g1)).to eql(true)
+    end
+  end
+
+  describe "#rook_after_castling" do
+    context "left side" do
+      it "returns rook's new coord" do
+        b.board[:a8] = Rook.new(:black)
+        expect(b.rook_after_castling(:c8)).to eql(:d8)
+        expect(b.board[:d8].is_a? Rook).to eql(true)
+        expect(b.board[:a8].nil?).to eql(true)
+        expect(b.board[:d8].never_moved).to eql(false)
+      end
+    end
+
+    context "right side" do
+      it "returns rook's new coord" do
+        b.board[:h1] = Rook.new(:white)
+        expect(b.rook_after_castling(:g1)).to eql(:f1)
+        expect(b.board[:f1].is_a? Rook).to eql(true)
+        expect(b.board[:h1].nil?).to eql(true)
+        expect(b.board[:f1].never_moved).to eql(false)
+      end
     end
   end
 
