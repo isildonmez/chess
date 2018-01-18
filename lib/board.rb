@@ -119,7 +119,7 @@ class Board
     # TODO: add to team hash; not to board
     # pawn_promotion
     if (cur_piece.is_a? Pawn) && (new_coord[1] == "1" || new_coord[1] == "8")
-      return pawn_promotion(new_coord)
+      return pawn_promotion(cur_coord, new_coord)
     end
 
     # castling
@@ -212,9 +212,14 @@ class Board
     rook_new_coord
   end
 
-  def pawn_promotion(new_coord, new_piece = pawn_to_be)
-    cur_pawn = @board[new_coord]
+  def pawn_promotion(cur_coord, new_coord, new_piece = pawn_to_be)
+    cur_pawn = @board[cur_coord]
+    @white_pieces[cur_pawn] = nil if cur_pawn.colour == :white
+    @black_pieces[cur_pawn] = nil if cur_pawn.colour == :black
     @board[new_coord] = Object.const_get(new_piece).new(cur_pawn.colour)
+    promoted = @board[new_coord]
+    @white_pieces[promoted] = new_coord if promoted.colour == :white
+    @black_pieces[promoted] = new_coord if promoted.colour == :black
   end
 
   def pawn_to_be

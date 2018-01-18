@@ -190,10 +190,12 @@ describe Board do
 
   describe "#pawn_promotion" do
     it "returns white Queen" do
-      b.board[:a8] = Pawn.new(:white)
-      b.pawn_promotion(:a8, "Queen")
+      b.board[:a7] = Pawn.new(:white)
+      b.pawn_promotion(:a7, :a8, "Queen")
       expect(b.board[:a8].is_a? Queen).to eql(true)
       expect(b.board[:a8].colour).to eql(:white)
+      expect(b.white_pieces.has_value?(:a7)).to eql(false)
+      expect(b.white_pieces.key(:a8).is_a? Queen).to eql(true)
     end
   end
 
