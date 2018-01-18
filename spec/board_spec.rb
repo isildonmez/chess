@@ -51,7 +51,7 @@ describe Board do
       it "changes board and pieces hash" do
         b.board[:b4] = Pawn.new(:black)
         b.board[:c4] = Pawn.new(:white)
-        b.board[:c4].turn_of_first_move = 10
+        b.board[:c4].turn_of_first_double_square = 10
         b.update(:b4, :c3, 11)
         expect(b.board[:c4]).to eql(nil)
         expect(b.white_pieces.has_value?(:c4)).to eql(false)
@@ -71,14 +71,14 @@ describe Board do
     it "returns true" do
       b.board[:b4] = Pawn.new(:black)
       b.board[:c4] = Pawn.new(:white)
-      b.board[:c4].turn_of_first_move = 10
+      b.board[:c4].turn_of_first_double_square = 10
       expect(b.en_passant?(:b4, :c3, 11)).to eql(true)
     end
 
     it "returns false" do
       b.board[:e5] = Pawn.new(:white)
       b.board[:f5] = Pawn.new(:black)
-      b.board[:f5].turn_of_first_move = 2
+      b.board[:f5].turn_of_first_double_square = 2
       expect(b.en_passant?(:e5, :d6, 4)).to eql(false)
     end
   end
@@ -162,8 +162,12 @@ describe Board do
   describe "#update_rook_after_castling" do
     context "left side" do
       it "returns rook's new coord" do
-        b.board[:a8] = Rook.new(:black)
+        b.board[:b8] = nil
+        b.board[:c8] = nil
+        b.board[:d8] = nil
         expect(b.update_rook_after_castling(:c8)).to eql(:d8)
+        expect(b.black_pieces.has_value?(:a8)).to eql(false)
+        expect(b.black_pieces.key(:d8).is_a? Rook).to eql(true)
         expect(b.board[:d8].is_a? Rook).to eql(true)
         expect(b.board[:a8].nil?).to eql(true)
         expect(b.board[:d8].never_moved).to eql(false)
@@ -172,8 +176,11 @@ describe Board do
 
     context "right side" do
       it "returns rook's new coord" do
-        b.board[:h1] = Rook.new(:white)
+        b.board[:f1] = nil
+        b.board[:g1] = nil
         expect(b.update_rook_after_castling(:g1)).to eql(:f1)
+        expect(b.white_pieces.has_value?(:h1)).to eql(false)
+        expect(b.white_pieces.key(:f1).is_a? Rook).to eql(true)
         expect(b.board[:f1].is_a? Rook).to eql(true)
         expect(b.board[:h1].nil?).to eql(true)
         expect(b.board[:f1].never_moved).to eql(false)

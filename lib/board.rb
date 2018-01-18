@@ -116,6 +116,7 @@ class Board
       @board[opp_coord] = nil
     end
 
+    # TODO: add to team hash; not to board
     # pawn_promotion
     if (cur_piece.is_a? Pawn) && (new_coord[1] == "1" || new_coord[1] == "8")
       return pawn_promotion(new_coord)
@@ -131,6 +132,7 @@ class Board
       @white_pieces.delete(other_piece) if other_piece.colour == :white
       @black_pieces.delete(other_piece) if other_piece.colour == :black
     end
+
     @white_pieces[cur_piece] = new_coord if cur_piece.colour == :white
     @black_pieces[cur_piece] = new_coord if cur_piece.colour == :black
 
@@ -154,7 +156,7 @@ class Board
     return false unless @board[opp_coord].is_a? Pawn
     return false unless (cur_piece.colour == :black && @board[opp_coord].colour == :white) ||
                         (cur_piece.colour == :white && @board[opp_coord].colour == :black)
-    return false unless @board[opp_coord].turn_of_first_move == game_turn - 1
+    return false unless @board[opp_coord].turn_of_first_double_square == game_turn - 1
     true
   end
 
@@ -201,9 +203,12 @@ class Board
       cur_rook = @board[rook_cur_coord]
       rook_new_coord = ("f" + new_coord[1]).to_sym
     end
+    @white_pieces[cur_rook] = rook_new_coord if cur_rook.colour == :white
+    @black_pieces[cur_rook] = rook_new_coord if cur_rook.colour == :black
     @board[rook_new_coord] = cur_rook
     @board[rook_cur_coord] = nil
     cur_rook.never_moved = false
+
     rook_new_coord
   end
 

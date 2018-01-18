@@ -1,10 +1,10 @@
 class Pawn
-  attr_accessor :colour, :symbol, :turn_of_first_move
+  attr_accessor :colour, :symbol, :turn_of_first_double_square
 
   def initialize(colour)
     @colour = colour
     @symbol = "♟"
-    @turn_of_first_move = nil
+    @turn_of_first_double_square = nil
   end
 
   def can_move?(cur_coord, new_coord)
