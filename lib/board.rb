@@ -104,6 +104,14 @@ class Board
     end
   end
 
+  def update_teams(obj, value)
+    if obj.colour == :white
+      @white_pieces[obj] = value
+    else
+      @black_pieces[obj] = value
+    end
+  end
+
   def update(cur_coord, new_coord, game_turn)
     cur_piece = @board[cur_coord]
 
@@ -116,7 +124,6 @@ class Board
       @board[opp_coord] = nil
     end
 
-    # TODO: add to team hash; not to board
     # pawn_promotion
     if (cur_piece.is_a? Pawn) && (new_coord[1] == "1" || new_coord[1] == "8")
       return pawn_promotion(cur_coord, new_coord)
@@ -133,8 +140,7 @@ class Board
       @black_pieces.delete(other_piece) if other_piece.colour == :black
     end
 
-    @white_pieces[cur_piece] = new_coord if cur_piece.colour == :white
-    @black_pieces[cur_piece] = new_coord if cur_piece.colour == :black
+    update_teams(cur_piece, new_coord)
 
     @board[new_coord] = @board[cur_coord]
     @board[cur_coord] = nil
@@ -203,8 +209,8 @@ class Board
       cur_rook = @board[rook_cur_coord]
       rook_new_coord = ("f" + new_coord[1]).to_sym
     end
-    @white_pieces[cur_rook] = rook_new_coord if cur_rook.colour == :white
-    @black_pieces[cur_rook] = rook_new_coord if cur_rook.colour == :black
+    update_teams(cur_rook, rook_new_coord)
+
     @board[rook_new_coord] = cur_rook
     @board[rook_cur_coord] = nil
     cur_rook.never_moved = false
@@ -214,12 +220,10 @@ class Board
 
   def pawn_promotion(cur_coord, new_coord, new_piece = pawn_to_be)
     cur_pawn = @board[cur_coord]
-    @white_pieces[cur_pawn] = nil if cur_pawn.colour == :white
-    @black_pieces[cur_pawn] = nil if cur_pawn.colour == :black
+    update_teams(cur_pawn, nil)
     @board[new_coord] = Object.const_get(new_piece).new(cur_pawn.colour)
     promoted = @board[new_coord]
-    @white_pieces[promoted] = new_coord if promoted.colour == :white
-    @black_pieces[promoted] = new_coord if promoted.colour == :black
+    update_teams(promoted, new_coord)
   end
 
   def pawn_to_be
