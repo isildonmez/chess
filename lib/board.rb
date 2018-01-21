@@ -98,9 +98,9 @@ class Board
   def get_pieces(colour, which_piece)
     which_piece = which_piece.to_s.capitalize
     if colour == :white
-      return white_pieces.select{|obj, coord| obj.class.name == which_piece}
+      return @white_pieces.select{|obj, coord| obj.class.name == which_piece}
     else
-      return black_pieces.select{|obj, coord| obj.class.name == which_piece}
+      return @black_pieces.select{|obj, coord| obj.class.name == which_piece}
     end
   end
 
@@ -138,6 +138,11 @@ class Board
     if (cur_piece.is_a? King) && castling?(cur_coord, new_coord)
       update_rook_after_castling(new_coord)
     end
+
+    cur_piece.turn_of_first_double_square = game_turn if (cur_piece.is_a? Pawn) &&
+                                            (cur_coord[0] == new_coord[0]) &&
+                                            ((cur_coord[1].to_i - new_coord[1].to_i).abs == 2)
+    cur_piece.never_moved = false if (cur_piece.is_a? Rook) || (cur_piece.is_a? King)
 
     other_piece = @board[new_coord]
     if other_piece

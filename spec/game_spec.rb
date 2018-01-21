@@ -66,4 +66,28 @@ describe Game do
     end
   end
 
+  describe "#its_king_checked?" do
+    it "returns true" do
+      chess.board.update(:d2, :d4, 8)
+      chess.board.update(:a8, :a4, 9)
+      chess.board.update(:e1, :e4, 10)
+      expect(chess.its_king_checked?(:d4, :d5, 12)).to eql(true)
+      expect(chess.board.get(:d4).is_a? Pawn).to eql(true)
+      expect(chess.board.get(:d5).nil?).to eql(true)
+      expect(chess.board.white_pieces.has_value?(:d5)).to eql(false)
+      expect(chess.board.white_pieces.key(:d4).is_a? Pawn).to eql(true)
+    end
+
+    it "returns false" do
+      chess.board.update(:d7, :d5, 8)
+      chess.board.update(:a1, :a4, 9)
+      chess.board.update(:e8, :e5, 10)
+      expect(chess.its_king_checked?(:d5, :d4, 12)).to eql(false)
+      expect(chess.board.get(:d5).is_a? Pawn).to eql(true)
+      expect(chess.board.get(:d4).nil?).to eql(true)
+      expect(chess.board.black_pieces.has_value?(:d4)).to eql(false)
+      expect(chess.board.black_pieces.key(:d5).is_a? Pawn).to eql(true)
+    end
+  end
+
 end

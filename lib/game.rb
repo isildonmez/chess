@@ -67,6 +67,33 @@ class Game
     free_way(cur_coord, new_coord) && valid_move_of_the_piece(cur_coord, new_coord, turn)
   end
 
+  def revert_board(real_board, real_whites, real_blacks)
+    @board.board = real_board
+    @board.white_pieces = real_whites
+    @board.black_pieces = real_blacks
+  end
+
+  def its_king_checked?(cur_coord, new_coord, turn)
+    cur_piece = @board.get(cur_coord)
+    its_king = @board.get_pieces(cur_piece.colour, :King)
+    king_coord = its_king.values[0]
+    opponent_team = cur_piece.colour == :white ? @board.black_pieces : @board.white_pieces
+
+    real_board = @board.board.clone
+    real_whites = @board.white_pieces.clone
+    real_blacks = @board.black_pieces.clone
+
+    @board.update(cur_coord, new_coord, turn)
+    opponent_team.each do |piece, coord|
+      if legal_move(coord, king_coord, turn)
+        revert_board(real_board, real_whites, real_blacks)
+        return true
+      end
+    end
+    revert_board(real_board, real_whites, real_blacks)
+    false
+  end
+
   # TODO
   def a_winner?(player)
     return game_over = false
@@ -107,11 +134,6 @@ if __FILE__ == $0
 
 
       accepted_move = true
-      cur_piece.turn_of_first_double_square = turn if (cur_piece.is_a? Pawn) &&
-                                              (cur_coord[0] == new_coord[0]) &&
-                                              ((cur_coord[1].to_i - new_coord[1].to_i).abs == 2)
-      cur_piece.never_moved = false if (cur_piece.is_a? Rook) || (cur_piece.is_a? King)
-
       chess.board.update(cur_coord, new_coord, turn)
     end
 
