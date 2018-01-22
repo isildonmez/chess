@@ -94,6 +94,22 @@ class Game
     false
   end
 
+  def checks_the_opponent_king?(new_coord, turn)
+    cur_piece = @board.get(new_coord)
+    if cur_piece.colour == :white
+      opp_king = @board.get_pieces(:black, :King)
+    else
+      opp_king = @board.get_pieces(:white, :King)
+    end
+    king_coord = opp_king.values[0]
+    if legal_move(new_coord, king_coord, turn)
+      @board.get(king_coord).is_checked = true
+      return true
+    else
+      return false
+    end
+  end
+
   # TODO
   def a_winner?(player)
     return game_over = false
@@ -127,14 +143,20 @@ if __FILE__ == $0
       end
 
       next unless chess.legal_move(cur_coord, new_coord, turn)
-
-      # Is its King checked by opponent?
-      # Does it check opponent's king?
-      # if neither of the above, can team play any other piece?
-
+      if chess.its_king_checked?(cur_coord, new_coord, turn)
+        # if stalemate?(check if different moves or different pieces are possible)
+        #   finish game
+        # else
+        #   next
+        # end
+      end
 
       accepted_move = true
       chess.board.update(cur_coord, new_coord, turn)
+
+      chess.checks_the_opponent_king?(new_coord, turn)
+
+      # Does it check opponent's king?
     end
 
     puts chess.board.visualise
