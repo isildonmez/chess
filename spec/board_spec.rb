@@ -59,11 +59,10 @@ describe Board do
     end
   end
 
-  describe "#get_pieces" do
-    it "returns a hash of requested pieces" do
-      expect(b.get_pieces(:white, "pawn").keys.all?{|obj| obj.class.name == "Pawn"}).to eql(true)
-      expect(b.get_pieces(:black, "pawn").length).to eql(8)
-      expect(b.get_pieces(:black, "KING").values).to eql([:e8])
+  describe "#get_all_about_king" do
+    it "returns King object" do
+      expect(b.get_all_about_king(:white).is_a? Array).to eql(true)
+      expect(b.get_all_about_king(:white).first.is_a? King).to eql(true)
     end
   end
 

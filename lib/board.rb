@@ -95,13 +95,9 @@ class Board
     return @board[coord].nil? ? false : true
   end
 
-  def get_pieces(colour, which_piece)
-    which_piece = which_piece.to_s.capitalize
-    if colour == :white
-      return @white_pieces.select{|obj, coord| obj.class.name == which_piece}
-    else
-      return @black_pieces.select{|obj, coord| obj.class.name == which_piece}
-    end
+  def get_all_about_king(colour)
+    which_pieces = colour == :white ? @white_pieces : @black_pieces
+    return which_pieces.select{|obj, coord| obj.class.name == "King"}.map{|obj, coord| [obj, coord]}.flatten
   end
 
   def update_teams(obj, value)

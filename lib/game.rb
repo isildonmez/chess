@@ -75,8 +75,8 @@ class Game
 
   def its_king_checked?(cur_coord, new_coord, turn)
     cur_piece = @board.get(cur_coord)
-    its_king = @board.get_pieces(cur_piece.colour, :King)
-    king_coord = its_king.values[0]
+    its_king = @board.get_all_about_king(cur_piece.colour).first
+    king_coord = @board.get_all_about_king(cur_piece.colour).last
     opponent_team = cur_piece.colour == :white ? @board.black_pieces : @board.white_pieces
 
     real_board = @board.board.clone
@@ -96,18 +96,29 @@ class Game
 
   def checks_the_opponent_king?(new_coord, turn)
     cur_piece = @board.get(new_coord)
-    if cur_piece.colour == :white
-      opp_king = @board.get_pieces(:black, :King)
-    else
-      opp_king = @board.get_pieces(:white, :King)
-    end
-    king_coord = opp_king.values[0]
+    king_colour = cur_piece.colour == :white ? :black : :white
+    opp_king = @board.get_all_about_king(king_colour).first
+    king_coord = @board.get_all_about_king(king_colour).last
     if legal_move(new_coord, king_coord, turn)
       @board.get(king_coord).is_checked = true
       return true
     else
       return false
     end
+  end
+
+  # TODO
+  # def check_mate(player)
+  #   return false unless @board.get_all_about_king(player).first.is checked?
+  #   return false if king_move?
+  #   return false if eat_piece?
+  #   return false if any_piece_moves_between?
+  #   return true
+  # end
+
+  def king_move?
+    possible_moves = []
+
   end
 
   # TODO
@@ -128,6 +139,7 @@ if __FILE__ == $0
     player = turn.odd? ? :white : :black
     accepted_move = false
 
+    # TODO: if its king checked
     until accepted_move
       puts "#{player.capitalize} player, please enter the coordinate of a piece you want to move. (e.g. a4)"
       cur_coord = gets.chomp.to_sym
@@ -153,10 +165,7 @@ if __FILE__ == $0
 
       accepted_move = true
       chess.board.update(cur_coord, new_coord, turn)
-
       chess.checks_the_opponent_king?(new_coord, turn)
-
-      # Does it check opponent's king?
     end
 
     puts chess.board.visualise
