@@ -39,7 +39,6 @@ class Game
     true
   end
 
-  # TODO: king cannot make castling if checked and its test.
   def valid_move_of_the_piece(cur_coord, new_coord, turn)
     cur_piece = @board.get(cur_coord)
     if @board.get(new_coord).nil?
@@ -49,6 +48,8 @@ class Game
       elsif cur_piece.is_a? King
         return false unless (@board.castling?(cur_coord, new_coord) ||
                             cur_piece.can_move?(cur_coord, new_coord))
+        return false if (@board.castling?(cur_coord, new_coord)) &&
+                        (cur_piece.is_checked)
       else
         return false unless cur_piece.can_move?(cur_coord, new_coord)
       end
@@ -134,9 +135,9 @@ class Game
     possible_coords
   end
 
-  # def piece_can_be_eaten?(coord, opp_king_coord, turn)
-  #   legal_move(opp_coord, king_coord, turn)
-  # end
+  def piece_can_be_eaten?(colour, turn)
+    legal_move(coord, opp_king_coord, turn)
+  end
 
   def any_piece_can_move_between
   end
