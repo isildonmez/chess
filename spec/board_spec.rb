@@ -199,6 +199,21 @@ describe Board do
   end
 
   describe "#empty_path?" do
+    it "returns false" do
+      expect(b.empty_path?(:a7, :b3)).to eql(false)
+    end
+
+    it "returns true" do
+      expect(b.empty_path?(:a1, :b2)).to eql(true)
+    end
+
+    it "returns true" do
+      expect(b.empty_path?(:h6, :c6)).to eql(true)
+    end
+
+    it "returns false" do
+      expect(b.empty_path?(:h7, :c7)).to eql(false)
+    end
   end
 
   describe "#path_between" do
