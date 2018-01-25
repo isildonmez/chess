@@ -113,7 +113,7 @@ class Game
     opp_colour = colour == :white ? :black : :white
     return false unless @board.get_all_about_king(opp_colour).first.is checked?
     return false unless king_can_move_to(opp_colour, turn).empty?
-    return false if eat_piece?
+    return false if piece_can_be_eaten?(colour,turn)
     return false if any_piece_moves_between?
     return true
   end
@@ -136,7 +136,17 @@ class Game
   end
 
   def piece_can_be_eaten?(colour, turn)
-    legal_move(coord, opp_king_coord, turn)
+    team = colour == :white ? @board.white_pieces : @board.black_pieces
+    pieces_checks_the_king = team.select{|obj, coord| checks_the_opponent_king?(coord, turn)}
+    return false if pieces_checks_the_king.length > 1
+    coord = pieces_checks_the_king.values.first
+
+    opp_team = colour == :white ? @board.black_pieces : @board.white_pieces
+    opp_pieces_eat_it = opp_team.values.select{|opp_coord| legal_move(opp_coord, coord, turn)}
+    opp_pieces_eat_it.each do |opp_coord|
+      return true if !its_king_checked?(opp_coord, coord, turn)
+    end
+    false
   end
 
   def any_piece_can_move_between

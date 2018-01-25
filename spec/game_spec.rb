@@ -122,4 +122,19 @@ describe Game do
     end
   end
 
+  describe "#piece_can_be_eaten" do
+    it "returns true" do
+      chess.board.update(:e1, :e3, 15)
+      chess.board.update(:f7, :f4, 16)
+      expect(chess.piece_can_be_eaten?(:black, 17)).to eql(true)
+    end
+
+    it "returns false" do
+      chess.board.update(:d8, :d6, 14)
+      chess.board.update(:e1, :e3, 15)
+      chess.board.update(:d7, :d4, 16)
+      expect(chess.piece_can_be_eaten?(:black, 17)).to eql(false)
+    end
+  end
+
 end
