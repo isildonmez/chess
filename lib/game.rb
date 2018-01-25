@@ -34,7 +34,7 @@ class Game
   def free_way(cur_coord, new_coord)
     cur_piece = @board.get(cur_coord)
     if !(cur_piece.is_a? Knight)
-      return false unless @board.empty_between?(cur_coord, new_coord)
+      return false unless @board.empty_path?(cur_coord, new_coord)
     end
     true
   end

@@ -198,93 +198,93 @@ describe Board do
     end
   end
 
-  describe "#empty_between?" do
-
-    context "when horizontal" do
-      it "returns false" do
-        expect(b.empty_between?(:a2, :c2)).to eql(false)
-      end
-
-      it "returns false" do
-        expect(b.empty_between?(:f7, :b7)).to eql(false)
-      end
-
-      it "returns true" do
-        expect(b.empty_between?(:h6, :g6)).to eql(true)
-      end
-
-      it "returns true" do
-        expect(b.empty_between?(:d5, :f5)).to eql(true)
-      end
-    end
-
-    context "when vertical" do
-      it "returns false" do
-        expect(b.empty_between?(:a2, :a8)).to eql(false)
-      end
-
-      it "returns false" do
-        expect(b.empty_between?(:a8, :a2)).to eql(false)
-      end
-
-      it "returns true" do
-        expect(b.empty_between?(:c7, :c6)).to eql(true)
-      end
-
-      it "returns true" do
-        expect(b.empty_between?(:b2, :b5)).to eql(true)
-      end
-    end
-
-    context "when forward diagonal" do
-      it "returns false" do
-        expect(b.empty_between?(:a1, :c3)).to eql(false)
-      end
-
-      it "returns false" do
-        expect(b.empty_between?(:c3, :a1)).to eql(false)
-      end
-
-      it "returns true" do
-        expect(b.empty_between?(:a1, :b2)).to eql(true)
-        expect(b.empty_between?(:b2, :a1)).to eql(true)
-        expect(b.empty_between?(:b2, :c3)).to eql(true)
-        expect(b.empty_between?(:c3, :b2)).to eql(true)
-      end
-
-      it "returns true" do
-        expect(b.empty_between?(:b2, :f6)).to eql(true)
-      end
-    end
-
-    context "when backward diagonal" do
-      it "returns false" do
-        expect(b.empty_between?(:a4, :d1)).to eql(false)
-      end
-
-      it "returns false" do
-        expect(b.empty_between?(:d1, :a4)).to eql(false)
-      end
-
-      it "returns true" do
-        expect(b.empty_between?(:d1, :c2)).to eql(true)
-        expect(b.empty_between?(:c2, :d1)).to eql(true)
-        expect(b.empty_between?(:c2, :b3)).to eql(true)
-        expect(b.empty_between?(:b3, :c2)).to eql(true)
-      end
-
-      it "returns true" do
-        expect(b.empty_between?(:f2, :b6)).to eql(true)
-      end
-    end
-
-    context "Anything else" do
-      it "returns false" do
-        expect(b.empty_between?(:d3, :h6)).to eql(false)
-      end
-    end
-
+  describe "#empty_path?" do
   end
+
+  describe "#path_between" do
+  end
+
+  describe "#horizontal" do
+    it "returns array" do
+      expect(b.horizontal(:a2, :c2)).to eql([:b2])
+      expect(b.horizontal(:f7, :b7)).to eql([:c7, :d7, :e7])
+    end
+
+    it "returns empty array" do
+      expect(b.horizontal(:h6, :g6)).to eql([])
+    end
+
+    it "returns nil" do
+      expect(b.horizontal(:d5, :f4)).to eql(nil)
+      expect(b.horizontal(:d5, :d4)).to eql(nil)
+    end
+  end
+
+  # describe "#{vertical}" do
+  #   it "returns false" do
+  #     expect(b.empty_between?(:a2, :a8)).to eql(false)
+  #   end
+
+  #   it "returns false" do
+  #     expect(b.empty_between?(:a8, :a2)).to eql(false)
+  #   end
+
+  #   it "returns true" do
+  #     expect(b.empty_between?(:c7, :c6)).to eql(true)
+  #   end
+
+  #   it "returns true" do
+  #     expect(b.empty_between?(:b2, :b5)).to eql(true)
+  #   end
+  # end
+
+  # describe "#{forward_diagonal}" do
+  #   it "returns false" do
+  #     expect(b.empty_between?(:a1, :c3)).to eql(false)
+  #   end
+
+  #   it "returns false" do
+  #     expect(b.empty_between?(:c3, :a1)).to eql(false)
+  #   end
+
+  #   it "returns true" do
+  #     expect(b.empty_between?(:a1, :b2)).to eql(true)
+  #     expect(b.empty_between?(:b2, :a1)).to eql(true)
+  #     expect(b.empty_between?(:b2, :c3)).to eql(true)
+  #     expect(b.empty_between?(:c3, :b2)).to eql(true)
+  #   end
+
+  #   it "returns true" do
+  #     expect(b.empty_between?(:b2, :f6)).to eql(true)
+  #   end
+  # end
+
+  # describe "#{backward_diagonal}" do
+  #   it "returns false" do
+  #     expect(b.empty_between?(:a4, :d1)).to eql(false)
+  #   end
+
+  #   it "returns false" do
+  #     expect(b.empty_between?(:d1, :a4)).to eql(false)
+  #   end
+
+  #   it "returns true" do
+  #     expect(b.empty_between?(:d1, :c2)).to eql(true)
+  #     expect(b.empty_between?(:c2, :d1)).to eql(true)
+  #     expect(b.empty_between?(:c2, :b3)).to eql(true)
+  #     expect(b.empty_between?(:b3, :c2)).to eql(true)
+  #   end
+
+  #   it "returns true" do
+  #     expect(b.empty_between?(:f2, :b6)).to eql(true)
+  #   end
+  # end
+
+  #   context "Anything else" do
+  #     it "returns false" do
+  #       expect(b.empty_between?(:d3, :h6)).to eql(false)
+  #     end
+  #   end
 
 
 

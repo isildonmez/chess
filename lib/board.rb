@@ -162,7 +162,7 @@ class Board
       return false if cur_coord[1].to_i != 5
     end
 
-    opp_coord = ytw(cur_coord, new_coord)
+    opp_coord = opponent_coord(cur_coord, new_coord)
     return false if @board[opp_coord].nil?
     return false unless @board[opp_coord].is_a? Pawn
     return false unless (cur_piece.colour == :black && @board[opp_coord].colour == :white) ||
@@ -198,7 +198,7 @@ class Board
       return false unless cur_rook.is_a? Rook
       return false unless cur_rook.never_moved
       return false if cur_rook.colour != cur_king.colour
-      return false unless empty_between?(cur_coord, rook_coord)
+      return false unless empty_path?(cur_coord, rook_coord)
       return true
     end
     false
@@ -239,6 +239,17 @@ class Board
     end
     pieces = ["Queen", "Knight", "Rook", "Bishop"]
     pieces[order]
+  end
+
+  def empty_path?(cur_coord, new_coord)
+    path = path_between(cur_coord, new_coord)
+    return false if path.length == 0
+    path = path.flatten
+    return true if path.length == 0
+    path.each do |coord|
+      return false if @board[coord]
+    end
+    true
   end
 
   def path_between(cur_coord, new_coord)
