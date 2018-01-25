@@ -105,4 +105,21 @@ describe Game do
     end
   end
 
+  describe "#king_can_move_to" do
+    it "returns an array" do
+      chess.board.update(:e1, :e4, 8)
+      expect(chess.king_can_move_to(:white, 11)).to eql([:d3, :d4, :d5, :e3, :e5, :f3, :f4, :f5])
+    end
+
+    it "returns an array" do
+      expect(chess.board.get(:f4).nil?).to eql(true)
+      expect(chess.board.get(:f5).nil?).to eql(true)
+      chess.board.update(:d7, :d6, 7)
+      chess.board.update(:e1, :e4, 8)
+      chess.board.update(:d8, :c3, 9)
+      chess.board.update(:g8, :f6, 11)
+      expect(chess.king_can_move_to(:white, 11)).to eql([:f4])
+    end
+  end
+
 end

@@ -74,16 +74,16 @@ class Game
   end
 
   def its_king_checked?(cur_coord, new_coord, turn)
-    cur_piece = @board.get(cur_coord)
-    its_king = @board.get_all_about_king(cur_piece.colour).first
-    king_coord = @board.get_all_about_king(cur_piece.colour).last
-    opponent_team = cur_piece.colour == :white ? @board.black_pieces : @board.white_pieces
-
     real_board = @board.board.clone
     real_whites = @board.white_pieces.clone
     real_blacks = @board.black_pieces.clone
 
     @board.update(cur_coord, new_coord, turn)
+    cur_piece = @board.get(new_coord)
+    its_king = @board.get_all_about_king(cur_piece.colour).first
+    king_coord = @board.get_all_about_king(cur_piece.colour).last
+    opponent_team = cur_piece.colour == :white ? @board.black_pieces : @board.white_pieces
+
     opponent_team.each do |piece, coord|
       if legal_move(coord, king_coord, turn)
         revert_board(real_board, real_whites, real_blacks)
@@ -108,17 +108,37 @@ class Game
   end
 
   # TODO
-  # def check_mate(player)
-  #   return false unless @board.get_all_about_king(player).first.is checked?
-  #   return false if king_move?
-  #   return false if eat_piece?
-  #   return false if any_piece_moves_between?
-  #   return true
+  def check_mate(colour, turn)
+    opp_colour = colour == :white ? :black : :white
+    return false unless @board.get_all_about_king(opp_colour).first.is checked?
+    return false unless king_can_move_to(opp_colour, turn).empty?
+    return false if eat_piece?
+    return false if any_piece_moves_between?
+    return true
+  end
+
+  def king_can_move_to(colour, turn)
+    coord = @board.get_all_about_king(colour).last
+    letters = [(coord[0].ord - 1), (coord[0].ord), (coord[0].ord + 1)].select{|num| num.between?(97, 104)}.map{|num| num.chr}
+    nums = [(coord[1].to_i - 1), (coord[1].to_i), (coord[1].to_i + 1)].select{|num| num.between?(1,8)}.map(&:to_s)
+
+    possible_coords = []
+    letters.each do |letter|
+      nums.each do |num|
+        possible_coords << ((letter + num).to_sym)
+      end
+    end
+    possible_coords -= [coord]
+
+    possible_coords = possible_coords.select{|pos_coord| !its_king_checked?(coord, pos_coord, turn)}
+    possible_coords
+  end
+
+  # def piece_can_be_eaten?(coord, opp_king_coord, turn)
+  #   legal_move(opp_coord, king_coord, turn)
   # end
 
-  def king_move?
-    possible_moves = []
-
+  def any_piece_can_move_between
   end
 
   # TODO
