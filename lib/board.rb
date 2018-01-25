@@ -245,20 +245,6 @@ class Board
     # Horizontal
 
     # Vertical
-    if cur_coord[0] == new_coord[0]
-      letter = cur_coord[0]
-      return true if (new_coord[1].to_i - cur_coord[1].to_i).abs == 1
-      if new_coord[1].to_i > cur_coord[1].to_i
-        for i in (cur_coord[1].to_i + 1)...(new_coord[1].to_i)
-          return false if @board[(letter + i.to_s).to_sym]
-        end
-      else
-        for i in (new_coord[1].to_i + 1)...(cur_coord[1].to_i)
-          return false if @board[(letter + i.to_s).to_sym]
-        end
-      end
-      return true
-    end
 
     cur_letter_ord = cur_coord[0].ord
     cur_num = cur_coord[1].to_i
@@ -312,6 +298,24 @@ class Board
     end
     for i in min...max
       path << (i.chr + num).to_sym
+    end
+    return path
+  end
+
+  def vertical(cur_coord, new_coord)
+    return nil if cur_coord[0] != new_coord[0]
+    path = []
+    return path if (new_coord[1].to_i - cur_coord[1].to_i).abs == 1
+
+    letter = cur_coord[0]
+    min, max = 0, 0
+    if new_coord[1].to_i > cur_coord[1].to_i
+      min, max = (cur_coord[1].to_i + 1), (new_coord[1].to_i)
+    else
+      min, max = (new_coord[1].to_i + 1), (cur_coord[1].to_i)
+    end
+    for i in min...max
+      path << (letter + i.to_s).to_sym
     end
     return path
   end
