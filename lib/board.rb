@@ -254,19 +254,7 @@ class Board
 
     # forward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference)
 
-    # Backward Diagonal
-    if (cur_letter_ord - new_letter_ord).abs == (cur_num - new_num).abs
-      if difference > 0
-        for i in 1...difference
-          return false if @board[((cur_letter_ord - i).chr + (cur_num + i).to_s).to_sym]
-        end
-      else
-        for i in 1...(difference.abs)
-          return false if @board[((cur_letter_ord + i).chr + (cur_num - i).to_s).to_sym]
-        end
-      end
-      return true
-    end
+    # backward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference)
 
     return false
   end
@@ -319,6 +307,23 @@ class Board
     else
       for i in 1...(difference.abs)
         path << ((cur_letter_ord - i).chr + (cur_num - i).to_s).to_sym
+      end
+    end
+    return path
+  end
+
+  def backward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference)
+    return nil if (cur_letter_ord - new_letter_ord).abs != (cur_num - new_num).abs
+    path = []
+    return path if (difference).abs == 1
+
+    if difference > 0
+      for i in 1...difference
+        path << ((cur_letter_ord - i).chr + (cur_num + i).to_s).to_sym
+      end
+    else
+      for i in 1...(difference.abs)
+        path << ((cur_letter_ord + i).chr + (cur_num - i).to_s).to_sym
       end
     end
     return path
