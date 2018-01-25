@@ -241,22 +241,18 @@ class Board
     pieces[order]
   end
 
-  def empty_between?(cur_coord, new_coord)
+  def path_between(cur_coord, new_coord)
     cur_letter_ord = cur_coord[0].ord
     cur_num = cur_coord[1].to_i
     new_letter_ord = new_coord[0].ord
     new_num = new_coord[1].to_i
     difference = new_num - cur_num
 
-    # horizontal(cur_coord, new_coord)
-
-    # vertical(cur_coord, new_coord)
-
-    # forward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference)
-
-    # backward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference)
-
-    return false
+    path = [horizontal(cur_coord, new_coord),
+            vertical(cur_coord, new_coord),
+            forward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference),
+            backward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference)].compact
+    return path
   end
 
   def horizontal(cur_coord, new_coord)
