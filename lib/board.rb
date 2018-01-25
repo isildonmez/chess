@@ -242,30 +242,17 @@ class Board
   end
 
   def empty_between?(cur_coord, new_coord)
-    # Horizontal
-
-    # Vertical
-
     cur_letter_ord = cur_coord[0].ord
     cur_num = cur_coord[1].to_i
     new_letter_ord = new_coord[0].ord
     new_num = new_coord[1].to_i
     difference = new_num - cur_num
-    return true if (difference).abs == 1
 
-    # Forward Diagonal
-    if (cur_letter_ord - new_letter_ord) == (cur_num - new_num)
-      if difference > 0
-        for i in 1...difference
-          return false if @board[((cur_letter_ord + i).chr + (cur_num + i).to_s).to_sym]
-        end
-      else
-        for i in 1...(difference.abs)
-          return false if @board[((cur_letter_ord - i).chr + (cur_num - i).to_s).to_sym]
-        end
-      end
-      return true
-    end
+    # horizontal(cur_coord, new_coord)
+
+    # vertical(cur_coord, new_coord)
+
+    # forward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference)
 
     # Backward Diagonal
     if (cur_letter_ord - new_letter_ord).abs == (cur_num - new_num).abs
@@ -316,6 +303,23 @@ class Board
     end
     for i in min...max
       path << (letter + i.to_s).to_sym
+    end
+    return path
+  end
+
+  def forward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference)
+    return nil if (cur_letter_ord - new_letter_ord) != (cur_num - new_num)
+    path = []
+    return path if (difference).abs == 1
+
+    if difference > 0
+      for i in 1...difference
+        path << ((cur_letter_ord + i).chr + (cur_num + i).to_s).to_sym
+      end
+    else
+      for i in 1...(difference.abs)
+        path << ((cur_letter_ord - i).chr + (cur_num - i).to_s).to_sym
+      end
     end
     return path
   end
