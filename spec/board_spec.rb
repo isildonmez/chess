@@ -220,65 +220,52 @@ describe Board do
     end
   end
 
-  # describe "#{vertical}" do
-  #   it "returns false" do
-  #     expect(b.empty_between?(:a2, :a8)).to eql(false)
-  #   end
+  describe "#vertical" do
+    it "returns array" do
+      expect(b.vertical(:a2, :a7)).to eql([:a3, :a4, :a5, :a6])
+      expect(b.vertical(:a7, :a2)).to eql([:a3, :a4, :a5, :a6])
+    end
 
-  #   it "returns false" do
-  #     expect(b.empty_between?(:a8, :a2)).to eql(false)
-  #   end
+    it "returns empty array" do
+      expect(b.vertical(:c7, :c6)).to eql([])
+    end
 
-  #   it "returns true" do
-  #     expect(b.empty_between?(:c7, :c6)).to eql(true)
-  #   end
+    it "returns nil" do
+      expect(b.vertical(:b2, :d2)).to eql(nil)
+    end
+  end
 
-  #   it "returns true" do
-  #     expect(b.empty_between?(:b2, :b5)).to eql(true)
-  #   end
-  # end
+  describe "#forward_diagonal" do
+    it "returns array" do
+      expect(b.forward_diagonal(97, 1, 99, 3, 2)).to eql([:b2])
+      expect(b.forward_diagonal(99, 3, 97, 1, -2)).to eql([:b2])
+    end
 
-  # describe "#{forward_diagonal}" do
-  #   it "returns false" do
-  #     expect(b.empty_between?(:a1, :c3)).to eql(false)
-  #   end
+    it "returns empty array" do
+      expect(b.forward_diagonal(97, 1, 98, 2 ,1)).to eql([])
+      expect(b.forward_diagonal(98, 2, 97, 1, -1)).to eql([])
+    end
 
-  #   it "returns false" do
-  #     expect(b.empty_between?(:c3, :a1)).to eql(false)
-  #   end
+    it "returns nil" do
+      expect(b.forward_diagonal(98, 2, 99, 6, 4)).to eql(nil)
+    end
+  end
 
-  #   it "returns true" do
-  #     expect(b.empty_between?(:a1, :b2)).to eql(true)
-  #     expect(b.empty_between?(:b2, :a1)).to eql(true)
-  #     expect(b.empty_between?(:b2, :c3)).to eql(true)
-  #     expect(b.empty_between?(:c3, :b2)).to eql(true)
-  #   end
+  describe "#backward_diagonal" do
+    it "returns array" do
+      expect(b.backward_diagonal(97, 4, 100, 1, -3)).to eql([:b3, :c2])
+      expect(b.backward_diagonal(100, 1, 97, 4, 3)).to eql([:c2, :b3])
+    end
 
-  #   it "returns true" do
-  #     expect(b.empty_between?(:b2, :f6)).to eql(true)
-  #   end
-  # end
+    it "returns empty array" do
+      expect(b.backward_diagonal(101, 1, 100, 2, 1)).to eql([])
+      expect(b.backward_diagonal(100, 2, 101, 1, -1)).to eql([])
+    end
 
-  # describe "#{backward_diagonal}" do
-  #   it "returns false" do
-  #     expect(b.empty_between?(:a4, :d1)).to eql(false)
-  #   end
-
-  #   it "returns false" do
-  #     expect(b.empty_between?(:d1, :a4)).to eql(false)
-  #   end
-
-  #   it "returns true" do
-  #     expect(b.empty_between?(:d1, :c2)).to eql(true)
-  #     expect(b.empty_between?(:c2, :d1)).to eql(true)
-  #     expect(b.empty_between?(:c2, :b3)).to eql(true)
-  #     expect(b.empty_between?(:b3, :c2)).to eql(true)
-  #   end
-
-  #   it "returns true" do
-  #     expect(b.empty_between?(:f2, :b6)).to eql(true)
-  #   end
-  # end
+    it "returns nil" do
+      expect(b.backward_diagonal(102, 2, 101, 6, 4)).to eql(nil)
+    end
+  end
 
   #   context "Anything else" do
   #     it "returns false" do
