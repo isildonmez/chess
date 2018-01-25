@@ -262,8 +262,8 @@ class Board
     path = [horizontal(cur_coord, new_coord),
             vertical(cur_coord, new_coord),
             forward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference),
-            backward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference)].compact
-    return path
+            backward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference)]
+    return path.compact
   end
 
   def horizontal(cur_coord, new_coord)
@@ -320,7 +320,7 @@ class Board
   end
 
   def backward_diagonal(cur_letter_ord, cur_num, new_letter_ord, new_num, difference)
-    return nil if (cur_letter_ord - new_letter_ord).abs != (cur_num - new_num).abs
+    return nil if (cur_letter_ord - new_letter_ord) != (new_num - cur_num)
     path = []
     return path if (difference).abs == 1
 

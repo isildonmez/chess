@@ -202,6 +202,17 @@ describe Board do
   end
 
   describe "#path_between" do
+    it "returns 2d empty array" do
+      expect(b.path_between(:a1, :b2)).to eql([[]])
+    end
+
+    it "returns 2d array" do
+      expect(b.path_between(:h7, :c7)).to eql([[:d7, :e7, :f7, :g7]])
+    end
+
+    it "returns empty array" do
+      expect(b.path_between(:a7, :b3)).to eql([])
+    end
   end
 
   describe "#horizontal" do
