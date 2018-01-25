@@ -162,7 +162,7 @@ class Board
       return false if cur_coord[1].to_i != 5
     end
 
-    opp_coord = opponent_coord(cur_coord, new_coord)
+    opp_coord = ytw(cur_coord, new_coord)
     return false if @board[opp_coord].nil?
     return false unless @board[opp_coord].is_a? Pawn
     return false unless (cur_piece.colour == :black && @board[opp_coord].colour == :white) ||
@@ -243,20 +243,6 @@ class Board
 
   def empty_between?(cur_coord, new_coord)
     # Horizontal
-    if cur_coord[1] == new_coord[1]
-      num = cur_coord[1]
-      return true if (new_coord[0].ord - cur_coord[0].ord).abs == 1
-      if new_coord[0].ord > cur_coord[0].ord
-        for i in (cur_coord[0].ord + 1)...(new_coord[0].ord)
-          return false if @board[(i.chr + num).to_sym]
-        end
-      else
-        for i in (new_coord[0].ord + 1)...(cur_coord[0].ord)
-          return false if @board[(i.chr + num).to_sym]
-        end
-      end
-      return true
-    end
 
     # Vertical
     if cur_coord[0] == new_coord[0]
@@ -310,6 +296,24 @@ class Board
     end
 
     return false
+  end
+
+  def horizontal(cur_coord, new_coord)
+    return nil if cur_coord[1] != new_coord[1]
+    path = []
+    return path if (new_coord[0].ord - cur_coord[0].ord).abs == 1
+
+    num = cur_coord[1]
+    min, max = 0, 0
+    if new_coord[0].ord > cur_coord[0].ord
+      min, max = (cur_coord[0].ord + 1), (new_coord[0].ord)
+    else
+      min, max = (new_coord[0].ord + 1), (cur_coord[0].ord)
+    end
+    for i in min...max
+      path << (i.chr + num).to_sym
+    end
+    return path
   end
 
 

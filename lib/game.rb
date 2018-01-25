@@ -114,8 +114,8 @@ class Game
     return false unless @board.get_all_about_king(opp_colour).first.is checked?
     return false unless king_can_move_to(opp_colour, turn).empty?
     return false if piece_can_be_eaten?(colour,turn)
-    return false if any_piece_moves_between?
-    return true
+    return false if any_piece_can_move_between?
+    true
   end
 
   def king_can_move_to(colour, turn)
@@ -149,7 +149,8 @@ class Game
     false
   end
 
-  def any_piece_can_move_between
+  def any_piece_can_move_between?(colour, turn)
+    team = colour == :white ? @board.white_pieces : @board.black_pieces
   end
 
   # TODO
