@@ -14,6 +14,22 @@ class Game
     "And white player plays first\n"
   end
 
+  def take_coordinates(player)
+    puts "#{player.capitalize} player, please enter the coordinate of a piece you want to move. (e.g. a4)"
+    cur_coord = gets.chomp.to_sym
+    until (valid_and_occupied?(cur_coord) && right_coloured_piece(player, cur_coord))
+      puts "It has to be empty and the piece has to be from your pieces. Please enter a valid coordinate.(e.g. a4, d5)"
+      cur_coord = gets.chomp.to_sym
+    end
+    puts "#{player.capitalize} player, please enter a new coordinate in order to make a legal move. (e.g. b6)"
+    new_coord = gets.chomp.to_sym
+    until valid_coord?(new_coord)
+      puts "It has to be valid. Please enter another coordinate.(e.g. a4, d5)"
+      new_coord = gets.chomp.to_sym
+    end
+    [cur_coord, new_coord]
+  end
+
   def valid_coord?(coord)
     return false if coord.length != 2
     return false unless ["a", "b", "c", "d", "e", "f", "g", "h"].include?(coord[0])
@@ -101,7 +117,6 @@ class Game
     opp_king = @board.get_all_about_king(king_colour).first
     king_coord = @board.get_all_about_king(king_colour).last
     if legal_move(new_coord, king_coord, turn)
-      @board.get(king_coord).is_checked = true
       return true
     else
       return false
@@ -109,7 +124,7 @@ class Game
   end
 
   # TODO
-  def check_mate(colour, turn)
+  def check_mate?(colour, turn)
     opp_colour = colour == :white ? :black : :white
     return false unless @board.get_all_about_king(opp_colour).first.is checked?
     return false unless king_can_move_to(opp_colour, turn).empty?
@@ -154,15 +169,12 @@ class Game
     pieces_checks_the_king = team.select{|obj, coord| checks_the_opponent_king?(coord, turn)}
     return false if pieces_checks_the_king.length > 1
     return false if pieces_checks_the_king.keys.first.is_a? Knight
-    puts "pieces_checks_the_king: #{pieces_checks_the_king}"
     threatening_coord = pieces_checks_the_king.values.first
-    puts "threatening_coord: #{threatening_coord}"
 
     opp_team = colour == :white ? @board.black_pieces : @board.white_pieces
     opp_colour = colour == :white ? :black : :white
     king_coord = @board.get_all_about_king(opp_colour).last
     path = @board.path_between(threatening_coord, king_coord).flatten
-    puts "path: #{path}"
     return false if path.empty?
 
     opp_team.values.each do |piece_coord|
@@ -174,11 +186,6 @@ class Game
     false
   end
 
-  # TODO
-  def a_winner?(player)
-    return game_over = false
-  end
-
 end
 
 if __FILE__ == $0
@@ -186,45 +193,42 @@ if __FILE__ == $0
   puts chess.rules
   puts chess.board.visualise
   game_over = false
-  turn = 1
+  turn = 0
 
   until game_over
+    turn += 1
     player = turn.odd? ? :white : :black
     accepted_move = false
 
-    # TODO: if its king checked
     until accepted_move
-      puts "#{player.capitalize} player, please enter the coordinate of a piece you want to move. (e.g. a4)"
-      cur_coord = gets.chomp.to_sym
-      until (chess.valid_and_occupied?(cur_coord) && chess.right_coloured_piece(player, cur_coord))
-        puts "It has to be empty and the piece has to be from your pieces. Please enter a valid coordinate.(e.g. a4, d5)"
-        cur_coord = gets.chomp.to_sym
-      end
-      puts "#{player.capitalize} player, please enter a new coordinate in order to make a legal move. (e.g. b6)"
-      new_coord = gets.chomp.to_sym
-      until chess.valid_coord?(new_coord)
-        puts "It has to be valid. Please enter another coordinate.(e.g. a4, d5)"
-        new_coord = gets.chomp.to_sym
-      end
-
+      coordinates = chess.take_coordinates(player)
+      cur_coord = coordinates[0]
+      new_coord = coordinates[1]
       next unless chess.legal_move(cur_coord, new_coord, turn)
+
       if chess.its_king_checked?(cur_coord, new_coord, turn)
-        # if stalemate?(check if different moves or different pieces are possible)
-        #   finish game
-        # else
-        #   next
-        # end
+        puts "Your king is checked!"
+        next
       end
+      @board.get_all_about_king(player)[0].is_checked = false
 
       accepted_move = true
-      chess.board.update(cur_coord, new_coord, turn)
-      chess.checks_the_opponent_king?(new_coord, turn)
     end
 
+    chess.board.update(cur_coord, new_coord, turn)
     puts chess.board.visualise
-    chess.a_winner?(player)
-    accepted_move = false
-    turn += 1
+    # TODO: check if different moves or different pieces are possible)
+    if chess.stalemate?
+      puts "STALEMATE!"
+      game_over = true
+    elsif chess.check_mate?(player, turn)
+      puts "CHECKMATE!"
+      puts "Congratulations #{player.capitalize} player!"
+      game_over = true
+    elsif chess.checks_the_opponent_king?(new_coord, turn)
+      @board.get_all_about_king(player)[0].is_checked = true
+      puts "#{player.capitalize} checked the King"
+    end
   end
 
 end
