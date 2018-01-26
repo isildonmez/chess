@@ -137,4 +137,27 @@ describe Game do
     end
   end
 
+  describe "#any_piece_can_move_between?" do
+    it "returns true" do
+      chess.board.update(:e1, :d3, 20)
+      chess.board.update(:a1, :a5, 22)
+      chess.board.update(:d7, :c6, 23)
+      expect(chess.any_piece_can_move_between?(:black, 24)).to eql(true)
+    end
+
+    it "returns false" do
+      chess.board.update(:e1, :e4, 3)
+      chess.board.update(:g8, :f6, 4)
+      expect(chess.any_piece_can_move_between?(:black, 5)).to eql(false)
+    end
+
+    it "returns false" do
+      chess.board.update(:g8, :e5, 11)
+      chess.board.update(:e1, :e3, 12)
+      chess.board.update(:h8, :e6, 13)
+      chess.board.update(:e3, :g4, 15)
+      expect(chess.any_piece_can_move_between?(:black, 5)).to eql(false)
+    end
+  end
+
 end

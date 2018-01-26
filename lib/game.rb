@@ -151,6 +151,27 @@ class Game
 
   def any_piece_can_move_between?(colour, turn)
     team = colour == :white ? @board.white_pieces : @board.black_pieces
+    pieces_checks_the_king = team.select{|obj, coord| checks_the_opponent_king?(coord, turn)}
+    return false if pieces_checks_the_king.length > 1
+    return false if pieces_checks_the_king.keys.first.is_a? Knight
+    puts "pieces_checks_the_king: #{pieces_checks_the_king}"
+    threatening_coord = pieces_checks_the_king.values.first
+    puts "threatening_coord: #{threatening_coord}"
+
+    opp_team = colour == :white ? @board.black_pieces : @board.white_pieces
+    opp_colour = colour == :white ? :black : :white
+    king_coord = @board.get_all_about_king(opp_colour).last
+    path = @board.path_between(threatening_coord, king_coord).flatten
+    puts "path: #{path}"
+    return false if path.empty?
+
+    opp_team.values.each do |piece_coord|
+      path.each do |square|
+        return true if legal_move(piece_coord, square, turn) &&
+                      !its_king_checked?(piece_coord, square, turn)
+      end
+    end
+    false
   end
 
   # TODO
