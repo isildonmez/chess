@@ -124,17 +124,17 @@ class Game
   end
 
   # TODO
-  def check_mate?(colour, turn)
-    opp_colour = colour == :white ? :black : :white
-    return false unless @board.get_all_about_king(opp_colour).first.is checked?
-    return false unless king_can_move_to(opp_colour, turn).empty?
-    return false if piece_can_be_eaten?(colour,turn)
-    return false if any_piece_can_move_between?
+  def check_mate?(player, turn)
+    opp_player = player == :white ? :black : :white
+    return false unless @board.get_all_about_king(opp_player).first.is_checked
+    return false unless king_can_move_to(opp_player, turn).empty?
+    return false if piece_can_be_eaten?(player,turn)
+    return false if any_piece_can_move_between?(player, turn)
     true
   end
 
-  def king_can_move_to(colour, turn)
-    coord = @board.get_all_about_king(colour).last
+  def king_can_move_to(player, turn)
+    coord = @board.get_all_about_king(player).last
     letters = [(coord[0].ord - 1), (coord[0].ord), (coord[0].ord + 1)].select{|num| num.between?(97, 104)}.map{|num| num.chr}
     nums = [(coord[1].to_i - 1), (coord[1].to_i), (coord[1].to_i + 1)].select{|num| num.between?(1,8)}.map(&:to_s)
 
@@ -150,13 +150,13 @@ class Game
     possible_coords
   end
 
-  def piece_can_be_eaten?(colour, turn)
-    team = colour == :white ? @board.white_pieces : @board.black_pieces
+  def piece_can_be_eaten?(player, turn)
+    team = player == :white ? @board.white_pieces : @board.black_pieces
     pieces_checks_the_king = team.select{|obj, coord| checks_the_opponent_king?(coord, turn)}
     return false if pieces_checks_the_king.length > 1
     coord = pieces_checks_the_king.values.first
 
-    opp_team = colour == :white ? @board.black_pieces : @board.white_pieces
+    opp_team = player == :white ? @board.black_pieces : @board.white_pieces
     opp_pieces_eat_it = opp_team.values.select{|opp_coord| legal_move(opp_coord, coord, turn)}
     opp_pieces_eat_it.each do |opp_coord|
       return true if !its_king_checked?(opp_coord, coord, turn)
@@ -164,16 +164,16 @@ class Game
     false
   end
 
-  def any_piece_can_move_between?(colour, turn)
-    team = colour == :white ? @board.white_pieces : @board.black_pieces
+  def any_piece_can_move_between?(player, turn)
+    team = player == :white ? @board.white_pieces : @board.black_pieces
     pieces_checks_the_king = team.select{|obj, coord| checks_the_opponent_king?(coord, turn)}
     return false if pieces_checks_the_king.length > 1
     return false if pieces_checks_the_king.keys.first.is_a? Knight
     threatening_coord = pieces_checks_the_king.values.first
 
-    opp_team = colour == :white ? @board.black_pieces : @board.white_pieces
-    opp_colour = colour == :white ? :black : :white
-    king_coord = @board.get_all_about_king(opp_colour).last
+    opp_team = player == :white ? @board.black_pieces : @board.white_pieces
+    opp_player = player == :white ? :black : :white
+    king_coord = @board.get_all_about_king(opp_player).last
     path = @board.path_between(threatening_coord, king_coord).flatten
     return false if path.empty?
 
@@ -184,6 +184,14 @@ class Game
       end
     end
     false
+  end
+
+  def stalemate?(player, turn)
+    opp_player = player == :white ? :black : :white
+    return false if board.get_all_about_king(opp_player)[0].is_checked
+    return true if (king_can_move_to(opp_player, turn).empty?) &&
+                    !piece_can_be_eaten?(player,turn) &&
+                    !any_piece_can_move_between?(player, turn)
   end
 
 end
@@ -210,7 +218,7 @@ if __FILE__ == $0
         puts "Your king is checked!"
         next
       end
-      @board.get_all_about_king(player)[0].is_checked = false
+      chess.board.get_all_about_king(player)[0].is_checked = false
 
       accepted_move = true
     end
@@ -218,15 +226,16 @@ if __FILE__ == $0
     chess.board.update(cur_coord, new_coord, turn)
     puts chess.board.visualise
     # TODO: check if different moves or different pieces are possible)
-    if chess.stalemate?
-      puts "STALEMATE!"
-      game_over = true
-    elsif chess.check_mate?(player, turn)
+
+    if chess.check_mate?(player, turn)
       puts "CHECKMATE!"
       puts "Congratulations #{player.capitalize} player!"
       game_over = true
+    elsif chess.stalemate?(player, turn)
+      puts "STALEMATE!"
+      game_over = true
     elsif chess.checks_the_opponent_king?(new_coord, turn)
-      @board.get_all_about_king(player)[0].is_checked = true
+      chess.board.get_all_about_king(player)[0].is_checked = true
       puts "#{player.capitalize} checked the King"
     end
   end

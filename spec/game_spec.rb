@@ -97,11 +97,10 @@ describe Game do
       expect(chess.checks_the_opponent_king?(:c3, 24)).to eql(false)
     end
 
-    it "returns true and changes king's attribute" do
+    it "returns true" do
       chess.board.update(:e1, :e4, 17)
       chess.board.update(:g8, :f6, 18)
       expect(chess.checks_the_opponent_king?(:f6, 18)).to eql(true)
-      expect(chess.board.get(:e4).is_checked).to eql(true)
     end
   end
 
