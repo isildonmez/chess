@@ -194,6 +194,21 @@ class Game
                     !any_piece_can_move_between?(player, turn)
   end
 
+  def welcoming
+    puts "Welcome to Chess game"
+    which_game = 'new'
+    unless File.zero?("saved_game.json")
+      puts "Do you want to start with a new game or continue with the saved game?"
+      puts "Please enter 'new' or 'old'."
+      which_game = gets.chomp.downcase
+      until (which_game == 'new') || (which_game == 'old')
+        puts "Enter 'new' or 'old'"
+        which_game = gets.chomp.downcase
+      end
+    end
+    return which_game
+  end
+
 end
 
 if __FILE__ == $0
@@ -225,7 +240,6 @@ if __FILE__ == $0
 
     chess.board.update(cur_coord, new_coord, turn)
     puts chess.board.visualise
-    # TODO: check if different moves or different pieces are possible)
 
     if chess.check_mate?(player, turn)
       puts "CHECKMATE!"
