@@ -194,7 +194,7 @@ class Game
                     !any_piece_can_move_between?(player, turn)
   end
 
-  def welcoming
+  def new_game?
     puts "Welcome to Chess game"
     which_game = 'new'
     unless File.zero?("saved_game.json")
@@ -206,17 +206,38 @@ class Game
         which_game = gets.chomp.downcase
       end
     end
-    return which_game
+    return which_game == 'new' ? true : false
+  end
+
+  def quit_the_game?
+    puts "Do you want to save and quit or continue?"
+    puts "Please enter 'quit' or 'continue'."
+    answer = gets.chomp.downcase
+    until (answer == 'quit') || (answer == 'continue')
+      puts "Enter 'quit' or 'continue', please."
+      answer = gets.chomp.downcase
+    end
+    return answer == 'quit' ? true :false
+  end
+
+  def save_game
+  end
+
+  def load_game
   end
 
 end
 
 if __FILE__ == $0
-  chess = Game.new(Board.new)
+  if chess.new_game?
+    chess = Game.new(Board.new)
+    turn = 0
+  else
+    # chess.load_game
+  end
   puts chess.rules
   puts chess.board.visualise
   game_over = false
-  turn = 0
 
   until game_over
     turn += 1
@@ -243,17 +264,19 @@ if __FILE__ == $0
 
     if chess.check_mate?(player, turn)
       puts "CHECKMATE!"
-      puts "Congratulations #{player.capitalize} player!"
+      puts "Congratulations, #{player.capitalize} player!"
       game_over = true
     elsif chess.stalemate?(player, turn)
       puts "STALEMATE!"
       game_over = true
     elsif chess.checks_the_opponent_king?(new_coord, turn)
       chess.board.get_all_about_king(player)[0].is_checked = true
-      puts "#{player.capitalize} checked the King"
+      puts "#{player.capitalize} player checked the King"
     end
-  end
 
+    break if chess.quit_the_game?
+  end
+  puts "Goodbye!"
 end
 
 
