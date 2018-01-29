@@ -123,7 +123,6 @@ class Game
     end
   end
 
-  # TODO
   def check_mate?(player, turn)
     opp_player = player == :white ? :black : :white
     return false unless @board.get_all_about_king(opp_player).first.is_checked
@@ -220,10 +219,16 @@ class Game
     return answer == 'quit' ? true :false
   end
 
-  def save_game
+  def save_game(board, turn)
+    data = JSON.dump ({:board => board, :turn => turn})
+    File.open('saved_game.json', 'w'){|file| file.write(data)}
   end
 
-  def load_game
+  def load_game(board, turn)
+    data = JSON.load File.read('saved_game.json')
+    board = data['board']
+    turn = data['turn']
+    @board.create_teams
   end
 
 end
@@ -233,8 +238,9 @@ if __FILE__ == $0
     chess = Game.new(Board.new)
     turn = 0
   else
-    # chess.load_game
+    chess.load_game(chess.board, turn)
   end
+
   puts chess.rules
   puts chess.board.visualise
   game_over = false
@@ -274,7 +280,10 @@ if __FILE__ == $0
       puts "#{player.capitalize} player checked the King"
     end
 
-    break if chess.quit_the_game?
+    if chess.quit_the_game?
+      save_game(chess.board, turn)
+      break
+    end
   end
   puts "Goodbye!"
 end
