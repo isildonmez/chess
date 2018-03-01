@@ -242,15 +242,22 @@ class Game
     turn = data['turn']
     pieces = data['board']
 
-    pieces.each_pair do |coord, features|
-      if features[2]
-        @board.board[coord] = Object.const_get(features[0]).new(features[1].to_sym, features[2])
-        puts "coord: #{coord}, obj: #{@board.board[coord]}"
-      else
-        @board.board[coord] = Object.const_get(features[0]).new(features[1].to_sym)
+    board = {}
+    ["a","b","c","d","e","f","g","h"].each do |letter|
+      for hor in 1..8
+        board[(letter+"#{hor}").to_sym] = nil
       end
     end
-    @board.create_teams
+
+    pieces.each_pair do |coord, features|
+      if features[2]
+        board[coord] = Object.const_get(features[0]).new(features[1].to_sym, features[2])
+        puts "coord: #{coord}, obj: #{board[coord]}"
+      else
+        board[coord] = Object.const_get(features[0]).new(features[1].to_sym)
+      end
+    end
+
     [board, turn]
   end
 
