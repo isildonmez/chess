@@ -194,7 +194,7 @@ class Game
                     !any_piece_can_move_between?(player, turn)
   end
 
-  def new_game?
+  def self.new_game?
     puts "Welcome to Chess game"
     which_game = 'new'
     unless File.zero?("saved_game.json")
@@ -236,8 +236,7 @@ class Game
     File.open('saved_game.json', 'w'){|file| file.write(data)}
   end
 
-  # TODO: create a board, change board initialize.
-  def load_game
+  def self.load_game
     data = JSON.load File.read('saved_game.json')
     turn = data['turn']
     pieces = data['board']
@@ -251,10 +250,9 @@ class Game
 
     pieces.each_pair do |coord, features|
       if features[2]
-        board[coord] = Object.const_get(features[0]).new(features[1].to_sym, features[2])
-        puts "coord: #{coord}, obj: #{board[coord]}"
+        board[coord.to_sym] = Object.const_get(features[0]).new(features[1].to_sym, features[2])
       else
-        board[coord] = Object.const_get(features[0]).new(features[1].to_sym)
+        board[coord.to_sym] = Object.const_get(features[0]).new(features[1].to_sym)
       end
     end
 
@@ -264,12 +262,13 @@ class Game
 end
 
 if __FILE__ == $0
-  if chess.new_game?
+  if Game.new_game?
     chess = Game.new(Board.new)
     turn = 0
   else
-
-    turn = chess.load_game
+    chess = Game.new(Board.new(Game.load_game[0]))
+    p chess.board
+    turn = Game.load_game[1]
   end
 
   puts chess.rules
