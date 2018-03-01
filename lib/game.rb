@@ -1,3 +1,4 @@
+require 'json'
 require_relative 'pieces'
 require_relative 'board'
 
@@ -9,7 +10,7 @@ class Game
   end
 
   def rules
-    "Welcome to chess game!\n" +
+    "Rules:\n" +
     "Each player should play by turns\n" +
     "And white player plays first\n"
   end
@@ -210,35 +211,50 @@ class Game
 
   def quit_the_game?
     puts "Do you want to save and quit or continue?"
-    puts "Please enter 'quit' or 'continue'."
+    puts "Please enter 'q' or 'c'."
     answer = gets.chomp.downcase
-    until (answer == 'quit') || (answer == 'continue')
-      puts "Enter 'quit' or 'continue', please."
+    until (answer == 'q') || (answer == 'c')
+      puts "Enter 'q' or 'c', please."
       answer = gets.chomp.downcase
     end
-    return answer == 'quit' ? true :false
+    return answer == 'q' ? true :false
   end
 
-  def save_game(board, turn)
-    data = JSON.dump ({:board => board, :turn => turn})
+  # TODO: even if dump its hash, hash includes some objects.
+  def save_game(turn)
+    pieces = {}
+    board.each_pair do |coord, obj|
+      next if coord.nil?
+      features = [obj.colour]
+      if obj.is_a? Pawn
+        features << (obj.turn_of_first_double_square)
+      elsif (obj.is_a? Rook) || (obj.is_a? King)
+        features << obj.never_moved
+      end
+      pieces[coord] = features
+    end
+    data = JSON.dump ({:board => pieces, :turn => turn})
     File.open('saved_game.json', 'w'){|file| file.write(data)}
   end
 
-  def load_game(board, turn)
+  def load_game
     data = JSON.load File.read('saved_game.json')
-    board = data['board']
+    @board.board = data['board']
     turn = data['turn']
     @board.create_teams
+    turn
   end
 
 end
 
 if __FILE__ == $0
+  chess = Game.new(Board.new)
   if chess.new_game?
-    chess = Game.new(Board.new)
     turn = 0
   else
-    chess.load_game(chess.board, turn)
+    turn = chess.load_game
+    puts "turn: #{turn}"
+    puts "board: #{chess.board}"
   end
 
   puts chess.rules
@@ -281,7 +297,7 @@ if __FILE__ == $0
     end
 
     if chess.quit_the_game?
-      save_game(chess.board, turn)
+      chess.save_game(turn)
       break
     end
   end

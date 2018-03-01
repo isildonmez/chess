@@ -1,7 +1,7 @@
 class Pawn
   attr_accessor :colour, :symbol, :turn_of_first_double_square
 
-  def initialize(colour)
+  def initialize(colour, turn_of_first_double_square = nil)
     @colour = colour
     @symbol = "♟"
     @turn_of_first_double_square = nil
