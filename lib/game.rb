@@ -220,12 +220,11 @@ class Game
     return answer == 'q' ? true :false
   end
 
-  # TODO: even if dump its hash, hash includes some objects.
   def save_game(turn)
     pieces = {}
     board.each_pair do |coord, obj|
       next if coord.nil?
-      features = [obj.colour]
+      features = [obj.class, obj.colour]
       if obj.is_a? Pawn
         features << (obj.turn_of_first_double_square)
       elsif (obj.is_a? Rook) || (obj.is_a? King)
@@ -239,8 +238,16 @@ class Game
 
   def load_game
     data = JSON.load File.read('saved_game.json')
-    @board.board = data['board']
     turn = data['turn']
+    pieces = data['board']
+
+    pieces.each_pair do |coord, features|
+      if features[2]
+        @board.board[coord] = features[0].new(features[1], features[2])
+      else
+        @board.board[coord] = features[0].new(features[1])
+      end
+    end
     @board.create_teams
     turn
   end
