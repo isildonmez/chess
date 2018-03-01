@@ -222,8 +222,8 @@ class Game
 
   def save_game(turn)
     pieces = {}
-    board.each_pair do |coord, obj|
-      next if coord.nil?
+    @board.board.each_pair do |coord, obj|
+      next if obj.nil?
       features = [obj.class, obj.colour]
       if obj.is_a? Pawn
         features << (obj.turn_of_first_double_square)
@@ -236,6 +236,7 @@ class Game
     File.open('saved_game.json', 'w'){|file| file.write(data)}
   end
 
+  # TODO: create a board, change board initialize.
   def load_game
     data = JSON.load File.read('saved_game.json')
     turn = data['turn']
@@ -243,25 +244,25 @@ class Game
 
     pieces.each_pair do |coord, features|
       if features[2]
-        @board.board[coord] = features[0].new(features[1], features[2])
+        @board.board[coord] = Object.const_get(features[0]).new(features[1].to_sym, features[2])
+        puts "coord: #{coord}, obj: #{@board.board[coord]}"
       else
-        @board.board[coord] = features[0].new(features[1])
+        @board.board[coord] = Object.const_get(features[0]).new(features[1].to_sym)
       end
     end
     @board.create_teams
-    turn
+    [board, turn]
   end
 
 end
 
 if __FILE__ == $0
-  chess = Game.new(Board.new)
   if chess.new_game?
+    chess = Game.new(Board.new)
     turn = 0
   else
+
     turn = chess.load_game
-    puts "turn: #{turn}"
-    puts "board: #{chess.board}"
   end
 
   puts chess.rules
