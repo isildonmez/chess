@@ -3,39 +3,44 @@ require_relative './pieces'
 class Board
   attr_accessor :board, :white_pieces, :black_pieces
 
-  def initialize()
-    @board = {}
-    ["a","b","c","d","e","f","g","h"].each do |letter|
-      for hor in 3..6
-        @board[(letter+"#{hor}").to_sym] = nil
-      end
-      @board[(letter+"2").to_sym] = Pawn.new(:white)
-      @board[(letter+"7").to_sym] = Pawn.new(:black)
-    end
-    @board[:a1] = Rook.new(:white)
-    @board[:h1] = Rook.new(:white)
-    @board[:a8] = Rook.new(:black)
-    @board[:h8] = Rook.new(:black)
-
-    @board[:b1] = Knight.new(:white)
-    @board[:g1] = Knight.new(:white)
-    @board[:b8] = Knight.new(:black)
-    @board[:g8] = Knight.new(:black)
-
-    @board[:c1] = Bishop.new(:white)
-    @board[:f1] = Bishop.new(:white)
-    @board[:c8] = Bishop.new(:black)
-    @board[:f8] = Bishop.new(:black)
-
-    @board[:d1] = Queen.new(:white)
-    @board[:d8] = Queen.new(:black)
-
-    @board[:e1] = King.new(:white)
-    @board[:e8] = King.new(:black)
-
+  def initialize(board = create_empty_board)
+    @board = board
     @white_pieces = {}
     @black_pieces = {}
     create_teams
+  end
+
+  def create_empty_board
+    board = {}
+    ["a","b","c","d","e","f","g","h"].each do |letter|
+      for hor in 3..6
+        board[(letter+"#{hor}").to_sym] = nil
+      end
+      board[(letter+"2").to_sym] = Pawn.new(:white)
+      board[(letter+"7").to_sym] = Pawn.new(:black)
+    end
+    board[:a1] = Rook.new(:white)
+    board[:h1] = Rook.new(:white)
+    board[:a8] = Rook.new(:black)
+    board[:h8] = Rook.new(:black)
+
+    board[:b1] = Knight.new(:white)
+    board[:g1] = Knight.new(:white)
+    board[:b8] = Knight.new(:black)
+    board[:g8] = Knight.new(:black)
+
+    board[:c1] = Bishop.new(:white)
+    board[:f1] = Bishop.new(:white)
+    board[:c8] = Bishop.new(:black)
+    board[:f8] = Bishop.new(:black)
+
+    board[:d1] = Queen.new(:white)
+    board[:d8] = Queen.new(:black)
+
+    board[:e1] = King.new(:white)
+    board[:e8] = King.new(:black)
+
+    board
   end
 
   def create_teams
