@@ -240,7 +240,7 @@ class Board
     until (order.is_a? Integer) && (order.between?(0,3))
       puts "Please enter a valid number"
       puts "Enter 0 for Queen, enter 1 for Knight, enter 2 for Rook, enter 3 for Bishop"
-      order = gets.chomp
+      order = gets.chomp.to_i
     end
     pieces = ["Queen", "Knight", "Rook", "Bishop"]
     pieces[order]
