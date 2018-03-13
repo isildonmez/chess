@@ -118,7 +118,8 @@ class Board
     @board[cur_coord] = nil
   end
 
-  def update(cur_coord, new_coord, game_turn)
+  def update(cur_coord, new_coord, game_turn, for_real = true)
+    # for real = true if the update method is called to update and not to see if the king is checked.
     cur_piece = @board[cur_coord]
 
     # en_passant
@@ -131,7 +132,7 @@ class Board
     end
 
     # pawn_promotion
-    if (cur_piece.is_a? Pawn) && (new_coord[1] == "1" || new_coord[1] == "8")
+    if for_real && (cur_piece.is_a? Pawn) && (new_coord[1] == "1" || new_coord[1] == "8")
       return pawn_promotion(cur_coord, new_coord)
     end
 
@@ -227,16 +228,19 @@ class Board
 
   def pawn_promotion(cur_coord, new_coord, new_piece = pawn_to_be)
     cur_pawn = @board[cur_coord]
-    update_teams(cur_pawn, nil)
+    @white_pieces.delete(cur_pawn) if cur_pawn.colour == :white
+    @black_pieces.delete(cur_pawn) if cur_pawn.colour == :black
+    @board[cur_coord] = nil
+
     @board[new_coord] = Object.const_get(new_piece).new(cur_pawn.colour)
     promoted = @board[new_coord]
     update_teams(promoted, new_coord)
   end
 
   def pawn_to_be
-    puts "Please which piece of the following do you want your pawn to transform  into?"
-    puts "Enter 1 for Queen, enter 2 for Knight, enter 3 for Rook, enter 4 for Bishop"
-    order = gets.chomp
+    puts "Which piece of the following do you want your pawn to transform into?"
+    puts "Enter 0 for Queen, enter 1 for Knight, enter 2 for Rook, enter 3 for Bishop"
+    order = gets.chomp.to_i
     until (order.is_a? Integer) && (order.between?(0,3))
       puts "Please enter a valid number"
       puts "Enter 0 for Queen, enter 1 for Knight, enter 2 for Rook, enter 3 for Bishop"

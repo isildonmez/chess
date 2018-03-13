@@ -96,7 +96,7 @@ class Game
     real_whites = @board.white_pieces.clone
     real_blacks = @board.black_pieces.clone
 
-    @board.update(cur_coord, new_coord, turn)
+    @board.update(cur_coord, new_coord, turn, false)
     cur_piece = @board.get(new_coord)
     its_king = @board.get_all_about_king(cur_piece.colour).first
     king_coord = @board.get_all_about_king(cur_piece.colour).last
@@ -267,7 +267,6 @@ if __FILE__ == $0
     turn = 0
   else
     chess = Game.new(Board.new(Game.load_game[0]))
-    p chess.board
     turn = Game.load_game[1]
   end
 
