@@ -137,7 +137,7 @@ class Board
     end
 
     # castling
-    if (cur_piece.is_a? King) && castling?(cur_coord, new_coord)
+    if for_real && (cur_piece.is_a? King) && castling?(cur_coord, new_coord)
       update_rook_after_castling(new_coord)
     end
 
@@ -145,6 +145,7 @@ class Board
                                             (cur_coord[0] == new_coord[0]) &&
                                             ((cur_coord[1].to_i - new_coord[1].to_i).abs == 2)
     cur_piece.never_moved = false if (cur_piece.is_a? Rook) || (cur_piece.is_a? King)
+    cur_piece.never_moved = true if !for_real && ((cur_piece.is_a? Rook) || (cur_piece.is_a? King))
 
     other_piece = @board[new_coord]
     if other_piece
