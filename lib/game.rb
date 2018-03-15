@@ -153,6 +153,8 @@ class Game
     team = player == :white ? @board.white_pieces : @board.black_pieces
     pieces_checks_the_king = team.select{|obj, coord| checks_the_opponent_king?(coord, turn)}
     return false if pieces_checks_the_king.length > 1
+    return false if pieces_checks_the_king.empty?
+    puts "pieces_checks_the_king #{pieces_checks_the_king}"
     coord = pieces_checks_the_king.values.first
 
     opp_team = player == :white ? @board.black_pieces : @board.white_pieces
@@ -167,6 +169,7 @@ class Game
     team = player == :white ? @board.white_pieces : @board.black_pieces
     pieces_checks_the_king = team.select{|obj, coord| checks_the_opponent_king?(coord, turn)}
     return false if pieces_checks_the_king.length > 1
+    return true if pieces_checks_the_king.empty?
     return false if pieces_checks_the_king.keys.first.is_a? Knight
     threatening_coord = pieces_checks_the_king.values.first
 
