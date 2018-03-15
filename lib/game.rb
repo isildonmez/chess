@@ -150,11 +150,10 @@ class Game
   end
 
   def piece_can_be_eaten?(player, turn)
-    team = player == :white ? @board.white_pieces : @board.black_pieces
+    team = player == :white ? @board.black_pieces : @board.white_pieces
     pieces_checks_the_king = team.select{|obj, coord| checks_the_opponent_king?(coord, turn)}
     return false if pieces_checks_the_king.length > 1
     return false if pieces_checks_the_king.empty?
-    puts "pieces_checks_the_king #{pieces_checks_the_king}"
     coord = pieces_checks_the_king.values.first
 
     opp_team = player == :white ? @board.black_pieces : @board.white_pieces
@@ -192,8 +191,7 @@ class Game
     opp_player = player == :white ? :black : :white
     return false if board.get_all_about_king(opp_player)[0].is_checked
     return true if (king_can_move_to(opp_player, turn).empty?) &&
-                    !piece_can_be_eaten?(player,turn) &&
-                    !any_piece_can_move_between?(player, turn)
+                    !piece_can_be_eaten?(player,turn)
   end
 
   def self.new_game?
