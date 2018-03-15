@@ -126,7 +126,6 @@ class Game
 
   def check_mate?(player, turn)
     opp_player = player == :white ? :black : :white
-    return false unless @board.get_all_about_king(opp_player).first.is_checked
     return false unless king_can_move_to(opp_player, turn).empty?
     return false if piece_can_be_eaten?(player,turn)
     return false if any_piece_can_move_between?(player, turn)
@@ -146,7 +145,7 @@ class Game
     end
     possible_coords -= [coord]
 
-    possible_coords = possible_coords.select{|pos_coord| !its_king_checked?(coord, pos_coord, turn)}
+    possible_coords = possible_coords.select{|pos_coord| legal_move(coord, pos_coord, turn)}.select{|pos_coord| !its_king_checked?(coord, pos_coord, turn)}
     possible_coords
   end
 
